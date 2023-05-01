@@ -1,5 +1,5 @@
 CREATE TABLE paciente(
-    numPaciente int NOT NULL,
+    numPaciente int NOT NULL AUTO_INCREMENT,
     nombre varchar(50) NOT NULL,
     apellidoPaterno varchar(50),
     apellidoMaterno varchar(50),
@@ -7,8 +7,10 @@ CREATE TABLE paciente(
     sexo varchar(15),
     telefono varchar(50),
     correoElectronico varchar(50),
+    contraseña char(150) NOT NULL,
     PRIMARY KEY (numPaciente)
 );
+
 
 CREATE TABLE direcciones_Pacientes(
     idDireccion int AUTO_INCREMENT,
@@ -133,4 +135,6 @@ CREATE TABLE tratamientos(
     nombre varchar(50) NOT NULL,
     descripcion varchar(150) NOT NULL,
     PRIMARY KEY (numPaciente, idMedico, idTratamiento),
-    CONSTRAINT FK_tratamientos1
+    CONSTRAINT FK_tratamientos1 FOREIGN KEY (numPaciente) REFERENCES paciente(numPaciente),
+    CONSTRAINT FK_tratamientos2 FOREIGN KEY (idMedico) REFERENCES medico(idMedico)
+);
