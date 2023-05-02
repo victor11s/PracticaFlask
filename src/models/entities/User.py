@@ -11,6 +11,21 @@ class User():
     def check_password(self, hashed_password, contraseña):
         return check_password_hash(hashed_password, contraseña)
     
+class UserRegistro():
+    def __init__(self, nombre, apellidoPaterno, apellidoMaterno, sexo, telefono, correoElectronico, contraseña):
+        self.nombre = nombre
+        self.apellidoPaterno = apellidoPaterno
+        self.apellidoMaterno = apellidoMaterno
+        self.sexo = sexo
+        self.telefono = telefono
+        self.correoElectronico = correoElectronico
+        self.contraseña = contraseña
+    
+    @classmethod
+    def hash_password(self, contraseña):
+        return generate_password_hash(contraseña)
+    
+    
 
 
 

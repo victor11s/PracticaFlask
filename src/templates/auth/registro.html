@@ -1,0 +1,75 @@
+{% extends './base.html' %}
+
+{% block title %} Registro {% endblock %}
+
+{% block customCSS %}
+<link rel="stylesheet" href="{{url_for('static', filename = 'css/sing-in.css')}}">
+
+{% endblock %}
+
+{% block body %}
+
+<main class="form-signin w-100 m-auto">
+    <form action="/registro" method="POST">
+
+        <img class="mb-4" src="{{url_for('static', filename= 'img/prueba.png')}}" alt="" width="72" height="57">
+
+        <h1 class="h3 mb-3 fw-normal">Registrese</h1>
+
+        {% with message =get_flashed_messages()%}
+        {% if message%}
+        <br>
+        {% for msg in message%}
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            {{msg}}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        <div class="form-floating">
+            <input type="email" class="form-control" name="correo" id="floatingInput" placeholder="name@example.com">
+            <label for="floatingInput">Correo</label>
+        </div>
+        <div class="form-floating">
+            <input type="password" class="form-control" name="contraseña" id="floatingPassword" placeholder="Password">
+            <label for="floatingPassword">Contraseña</label>
+        </div>
+        
+        <div class="form-floating">
+            <input type="text" class="form-control" name="nombre" id="floatingInput" placeholder="">
+            <label for="floatingInput">Nombre</label>
+        </div>
+        <div class="form-floating">
+            <input type="text" class="form-control" name="apellidoPaterno" id="floatingInput" placeholder="">
+            <label for="floatingInput">Apellido Paterno</label>
+        </div>
+        <div class="form-floating">
+            <input type="text" class="form-control" name="apellidoMaterno" id="floatingInput" placeholder="">
+            <label for="floatingInput">Apellido Materno</label>
+        </div>
+        <!--Que el de seoxo sea un select-->
+        <div class="form-floating">
+            <select class="form-select" name="sexo" id="floatingSelect" aria-label="Floating label select example">
+                <option selected>Sexo</option>
+                <option value="H">Hombre</option>
+                <option value="M">Mujer</option>
+            </select>
+            <label for="floatingSelect">Sexo</label>
+        </div>        
+        <div class="form-floating">
+            <input type="text" class="form-control" name="telefono" id="floatingInput" placeholder="">
+            <label for="floatingInput">Telefono</label>
+        </div>
+
+        <button class="w-100 btn btn-lg btn-primary mt-3" type="submit">Registrar</button>
+
+
+        <div class="form-floating mt-2">
+            <a href="/login">Ya tengo cuenta</a>
+
+    </form>
+</main>
+
+{% endblock%}

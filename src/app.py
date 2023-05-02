@@ -6,8 +6,10 @@ from config import config
 from models.ModelUser import ModelUser
 
 
+
 #entities
 from models.entities.User import User
+from models.entities.User import UserRegistro
 
 app = Flask(__name__)
 
@@ -18,6 +20,22 @@ db=MySQL(app)
 def index():
     #cuando se hace una entrada normal, te lleva a la pagina principal
     return redirect(url_for('login'))
+
+@app.route('/registro', methods=['GET', 'POST'])
+def registro():
+    return render_template('auth/registro.html')
+
+def registroUsuario():
+    if request.method == 'POST':
+        user=UserRegistro(request.form['nombre'],request.form['apellidoPaterno'],request.form['apellidoMaterno'],request.form['sexo'],request.form['telefono'],request.form['correo'],request.form['contraseña'])
+        #si el registro es exitoso, te lleva a la pagina de login y le das un flash de usuario registrado, si no solo dar flash de que no se pudo registrar
+        if ModelUser.register(db,user):
+            flash("Usuario registrado")
+            return render_template('auth/login.html')
+        else:
+            flash("No se pudo registrar")
+            return render_template('auth/registro.html')
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -56,6 +74,14 @@ def login():
 @app.route('/home')
 def home():
     return render_template('home.html')
+
+@app.route('/homeDoctor')
+def homeDoctor():
+    return render_template('homeDoctor.html')
+
+@app.route('/homeAdmi')
+def homeAdmi():
+    return render_template('homeAdmi.html')
 
 if __name__ == '__main__':
     #esto me sirve para cargar la configuracion de desarrollo
