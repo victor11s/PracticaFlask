@@ -13,8 +13,20 @@
     <form action="/login" method="POST">
 
         <img class="mb-4" src="{{url_for('static', filename= 'img/prueba.png')}}" alt="" width="72" height="57">
-
+        
         <h1 class="h3 mb-3 fw-normal">Inicie Sesión</h1>
+
+        {% with message =get_flashed_messages()%}
+        {% if message%}
+        <br>
+        {% for msg in message%}
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            {{msg}}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
 
         <div class="form-floating">
             <input type="email" class="form-control" name="correo" id="floatingInput" placeholder="name@example.com">
@@ -24,6 +36,8 @@
             <input type="password" class="form-control" name="contraseña" id="floatingPassword" placeholder="Password">
             <label for="floatingPassword">Contraseña</label>
         </div>
+
+
 
         <button class="w-100 btn btn-lg btn-primary" type="submit">Iniciar Sesión</button>
 
