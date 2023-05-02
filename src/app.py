@@ -26,13 +26,19 @@ def login():
         #print(request.form['correo'])
         #print(request.form['contraseña'])
 
-        user=User(0,request.form['correo'],request.form['contraseña'])
+        user=User(0,request.form['correo'],request.form['contraseña'],0)
         logged_user=ModelUser.login(db,user)
         if logged_user != None:
             
             if logged_user.contraseña == True:
                 flash("Bienvenido {}".format(logged_user.correoElectronico))
-                return render_template('home.html')
+                #agrega un if, para ver que tipo de usuario es, si es 1, es un paciente, si es 2, es un doctor, 3 es un administrador
+                if logged_user.tipoUsuario == 1:
+                    return render_template('home.html')
+                elif logged_user.tipoUsuario == 2:
+                    return render_template('homeDoctor.html')
+                elif logged_user.tipoUsuario == 3:
+                    return render_template('homeAdmi.html')
             else:   
                 
                 flash("Contraseña incorrecta")
