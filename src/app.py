@@ -28,7 +28,6 @@ def registro():
 def registroUsuario():
     if request.method == 'POST':
         user=UserRegistro(request.form['nombre'],request.form['apellidoPaterno'],request.form['apellidoMaterno'],request.form['sexo'],request.form['telefono'],request.form['correo'],request.form['contraseña'])
-        #si el registro es exitoso, te lleva a la pagina de login y le das un flash de usuario registrado, si no solo dar flash de que no se pudo registrar
         if ModelUser.register(db,user):
             flash("Usuario registrado")
             return render_template('auth/login.html')
