@@ -10,4 +10,4 @@ class User():
     def check_password(self, hashed_password, contraseña):
         return check_password_hash(hashed_password, contraseña)
 
-#print(generate_password_hash('123'))
+#print(generate_password_hash('bigmac'))

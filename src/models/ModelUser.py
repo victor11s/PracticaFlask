@@ -6,7 +6,7 @@ class ModelUser():
     def login(self,db,user):
         try:
             cursor = db.connection.cursor()
-            sql= """ SELECT * FROM paciente WHERE correoElectronico = '{}' """.format(user.correoElectronico)
+            sql= """ SELECT paciente.numPaciente, paciente.correoElectronico, paciente.contraseña FROM paciente WHERE correoElectronico = '{}' """.format(user.correoElectronico)
             cursor.execute(sql)
             row=cursor.fetchone()
             # con este if verifico que exista el usuario y mediante la funcion de user de checak password, verifico que la contraseña sea correcta, se le pasa la correcta con el hash y despues se le pasa la que dio el usuario

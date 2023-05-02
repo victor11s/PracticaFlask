@@ -29,19 +29,17 @@ def login():
         user=User(0,request.form['correo'],request.form['contraseña'])
         logged_user=ModelUser.login(db,user)
         if logged_user != None:
-            print("si existes")
-            if logged_user.contraseña:
-                print("contraseña correcta")
-                return redirect(url_for('home'))
             
-            else:
-                print(request.form['contraseña'])
-                print("contraseña incorrecta")
+            if logged_user.contraseña == True:
+                flash("Bienvenido {}".format(logged_user.correoElectronico))
+                return render_template('home.html')
+            else:   
+                
                 flash("Contraseña incorrecta")
                 return render_template('auth/login.html')
 
         else:
-            print("no existes")
+            
             flash("El usuario no existe")
             return render_template('auth/login.html')
     else:
