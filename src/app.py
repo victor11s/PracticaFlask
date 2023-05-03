@@ -51,6 +51,7 @@ def login():
                 print(logged_user.tipoUsuario)
                 #agrega un if, para ver que tipo de usuario es, si es 1, es un paciente, si es 2, es un doctor, 3 es un administrador
                 if logged_user.tipoUsuario == 1:
+                    print(logged_user.correoElectronico)
                     return render_template('home.html',user=logged_user)
                 elif logged_user.tipoUsuario == 2:
                     return render_template('homeDoctor.html',user=logged_user)
