@@ -1,6 +1,6 @@
 {% extends './base.html' %}
 
-{% block title %} Home {{user.correoElectonico}} {% endblock %}
+{% block title %} Home {{ user.correoElectronico }} {% endblock %}
 
 {% block customCSS %}
 <link rel="stylesheet" href="{{url_for('static', filename = 'css/sticky-footer-navbar.css')}}">
@@ -38,7 +38,7 @@
   
   
   <main role="main" class="container">
-    <h1 class="mt-5">Bienvenido/a Administrador {{user.correoElectonico}}</h1>
+    <h1 class="mt-5">Bienvenido/a Administrador {{ user.correoElectronico }}</h1>
    
   </main>
 
