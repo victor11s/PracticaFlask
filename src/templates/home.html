@@ -1,12 +1,59 @@
 {% extends './base.html' %}
 
-{% block title %} Home Usuario {% endblock %}
+{% block title %} Home {{user.correoElectonico}} {% endblock %}
 
+{% block customCSS %}
+<link rel="stylesheet" href="{{url_for('static', filename = 'css/sticky-footer-navbar.css')}}">
 
+{% endblock %}
 
 {% block body %}
 
-<h1>Bienvenido/a {{user.correoElectonico}}</h1>
+
+<header>
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-info">
+        <!--Agrega un logo-->
+        <img src="{{url_for('static', filename= 'img/prueba.png')}}" alt="" width="72" height="57" style="margin-left: 10px;">
+      <a class="navbar-brand" style="margin-left: 10px;" href="#">MediAPP</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Historial</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Resultados</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Mi Perfil</a>
+          </li>
+        </ul>
+
+      </div>
+    </nav>
+  </header>
+
+
+
+
+
+  <main role="main" class="container">
+    <h1 class="mt-5">Bienvenido/a {{user.correoElectonico}}</h1>
+   
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <span class="text-muted">MediAPP derechos reservados</span>
+    </div>
+  </footer>
+
+
+
+
 
 
 {% endblock%}
