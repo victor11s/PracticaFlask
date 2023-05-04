@@ -5,12 +5,15 @@ from config import config
 
 #models
 from models.ModelUser import ModelUser
+from models.ModelHistorial import ModelHistorial
 
 
 
 #entities
 from models.entities.User import User
 from models.entities.User import UserRegistro
+from models.entities.Historial import Historial
+
 
 app = Flask(__name__)
 
@@ -35,6 +38,9 @@ def registroUsuario():
         else:
             flash("No se pudo registrar")
             return render_template('auth/registro.html')
+        
+
+
 
 
 @app.route('/login', methods=['GET', 'POST'])
