@@ -76,6 +76,11 @@ def login():
 def home():
     return render_template('home.html')
 
+@app.route('/historial')
+def historial():
+    return render_template('historial.html')
+
+
 @app.route('/homeDoctor')
 def homeDoctor():
     return render_template('homeDoctor.html')
