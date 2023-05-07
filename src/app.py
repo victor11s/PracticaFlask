@@ -31,10 +31,14 @@ def index():
 def registro():
     return render_template('auth/registro.html')
 
+@app.route('/registroUsuario', methods=['GET', 'POST'])
 def registroUsuario():
     if request.method == 'POST':
-        user=UserRegistro(request.form['nombre'],request.form['apellidoPaterno'],request.form['apellidoMaterno'],request.form['sexo'],request.form['telefono'],request.form['correo'],request.form['contraseña'])
-        if ModelUser.register(db,user):
+        print('entre')
+        usuario=UserRegistro(request.form['nombre'],request.form['apellidoPaterno'],request.form['apellidoMaterno'],request.form['sexo'],request.form['telefono'],request.form['correo'],UserRegistro.hash_password(request.form['contraseña']))
+        print(usuario)
+        usuarioReg=ModelUser.register(db,usuario)
+        if ModelUser.register(db,usuario) == True:
             flash("Usuario registrado")
             return render_template('auth/login.html')
         else:
