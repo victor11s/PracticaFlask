@@ -6,6 +6,7 @@ from config import config
 #models
 from models.ModelUser import ModelUser
 from models.ModelHistorial import ModelHistorial
+from models.ModelResultado import ModelResultado
 
 
 
@@ -13,6 +14,7 @@ from models.ModelHistorial import ModelHistorial
 from models.entities.User import User
 from models.entities.User import UserRegistro
 from models.entities.Historial import Historial
+from models.entities.Resultado import Resultado
 
 
 app = Flask(__name__)
@@ -66,11 +68,19 @@ def login():
                     historiales.append(historial_obj)
                 print(historiales)
 
+                resultado = ModelResultado.getResults(db, logged_user.numPaciente)
+                resultados = []
+                for res in resultado:
+                    resultado_obj = Resultado(res[0], res[1], res[2], res[3])
+                    resultados.append(resultado_obj)
+                print(resultados)
+
 
                 #agrega un if, para ver que tipo de usuario es, si es 1, es un paciente, si es 2, es un doctor, 3 es un administrador
                 if logged_user.tipoUsuario == 1:
                     print(logged_user.correoElectronico)
-                    return render_template('home.html',user=logged_user,historiales=historiales)
+                    return render_template('home.html',user=logged_user,historiales=historiales, resultados=resultados)
+                
                 elif logged_user.tipoUsuario == 2:
                     return render_template('homeDoctor.html',user=logged_user)
                 elif logged_user.tipoUsuario == 3:

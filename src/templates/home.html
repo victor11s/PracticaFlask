@@ -62,7 +62,7 @@
             Historial #{{ historial.idHistorial }}
           </button>
         </h2>
-        <div id="collapse{{ historial.idHistorial }}" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+        <div id="collapse{{ historial.idHistorial }}" class="accordion-collapse collapse show" data-bs-parent="#accordionHistorial">
           <div class="accordion-body">
             <strong>Enfermedad:</strong> {{ historial.enfermedad }}<br>
             <strong>Detalle:</strong> {{ historial.numConsulta }}<br>
@@ -72,6 +72,27 @@
       </div>
     </div>
   {% endfor %}
+
+  <h2 class="mb-3">Resultados</h2>
+  {% for resultado in resultados %}
+    <div class="accordion" id="accordionResultados">
+      <div class="accordion-item mt-1">
+        <h2 class="accordion-header">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ resultado.idExamen }}" aria-expanded="true" aria-controls="collapse{{ resultado.idExamen }}">
+            Examen #{{ resultado.idExamen }} - {{ resultado.fechaExamen }}
+          </button>
+        </h2>
+        <div id="collapse{{ resultado.idExamen }}" class="accordion-collapse collapse show" data-bs-parent="#accordionResultados">#si modifico el data-bs-parent ya no se abren igual
+          <div class="accordion-body">
+            <strong>Resultado</strong> {{ resultado.resultadosExamen }}<br>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+
+  
   
   
   
