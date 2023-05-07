@@ -4,10 +4,10 @@ class Paciente_Historial():
         self.numPaciente = numPaciente
 
 class Historial():
-    def __init__(self,idHistorial, numConsulta, enfermedad, detalle):
+    def __init__(self,idHistorial, numConsulta, enfermedad):
         self.idHistorial = idHistorial
         self.numConsulta = numConsulta
         self.enfermedad = enfermedad
-        self.detalle = detalle
+
 
 

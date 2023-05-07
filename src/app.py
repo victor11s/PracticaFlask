@@ -58,16 +58,19 @@ def login():
 
 
                 # importa la funcion obtener_id_historial_paciente de ModelHistorial
-                Historial=ModelHistorial.obtener_id_historial_paciente(db,logged_user.numPaciente)
-                print(Historial)
+                idHistorial = ModelHistorial.obtener_id_historial_paciente(db, logged_user.numPaciente)
+                historiales = []
+                for id in idHistorial:
+                    historial = ModelHistorial.obtener_historial_paciente(db, id[0])
+                    historial_obj = Historial(historial[0], historial[1], historial[2]) # crea un objeto Historial
+                    historiales.append(historial_obj)
+                print(historiales)
 
-                
-                
 
                 #agrega un if, para ver que tipo de usuario es, si es 1, es un paciente, si es 2, es un doctor, 3 es un administrador
                 if logged_user.tipoUsuario == 1:
                     print(logged_user.correoElectronico)
-                    return render_template('home.html',user=logged_user)
+                    return render_template('home.html',user=logged_user,historiales=historiales)
                 elif logged_user.tipoUsuario == 2:
                     return render_template('homeDoctor.html',user=logged_user)
                 elif logged_user.tipoUsuario == 3:
