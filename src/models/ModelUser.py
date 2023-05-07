@@ -1,5 +1,6 @@
 from.entities.User import User
 
+
 class ModelUser():
 
     #haz el mismo metodo de arriba, pero obteniendo ademas su tipoUsuario
@@ -27,7 +28,23 @@ class ModelUser():
             sql=""" INSERT INTO paciente (nombre, apellidoPaterno, apellidoMaterno, sexo, telefono, correoElectronico, contraseña) VALUES ('{}','{}','{}','{}','{}','{}','{}') """.format(user.nombre,user.apellidoPaterno,user.apellidoMaterno,user.sexo,user.telefono,user.correoElectronico,user.contraseña)
             cursor.execute(sql)
             db.connection.commit()
+            print("Usuario registrado")
             return True
         except Exception as ex:
+            print("No se pudo registrar")
             raise Exception(ex)
         
+    @classmethod
+    def get_by_id(cls, db, numPaciente):
+        try:
+            cursor = db.connection.cursor()
+            sql=""" SELECT paciente.numPaciente, paciente.correoElectronico, paciente.contraseña, paciente.tipoUsuario FROM paciente WHERE numPaciente = '{}' """.format(numPaciente)
+            cursor.execute(sql)
+            row=cursor.fetchone()
+            if row != None:
+                user=User(row[0],row[1],row[2],row[3])
+                return user
+            else:
+                return None
+        except Exception as ex:
+            raise Exception(ex)

@@ -10,6 +10,17 @@ class User():
     @classmethod #para no instanciar la clase  
     def check_password(self, hashed_password, contraseña):
         return check_password_hash(hashed_password, contraseña)
+
+#usuario, pero con un objeto historial que se obtiene de la entidad historial   
+class UserHistorial():
+    def __init__(self, numPaciente, correoElectronico, contraseña, tipoUsuario, historial):
+        self.numPaciente = numPaciente
+        self.correoElectronico = correoElectronico
+        self.contraseña = contraseña
+        self.tipoUsuario = tipoUsuario
+        self.historial = historial
+    
+    
     
 class UserRegistro():
     def __init__(self, nombre, apellidoPaterno, apellidoMaterno, sexo, telefono, correoElectronico, contraseña):

@@ -38,7 +38,6 @@ def registroUsuario():
         else:
             flash("No se pudo registrar")
             return render_template('auth/registro.html')
-        
 
 
 
@@ -56,6 +55,15 @@ def login():
             
             if logged_user.contraseña == True:
                 print(logged_user.tipoUsuario)
+
+
+                # importa la funcion obtener_id_historial_paciente de ModelHistorial
+                Historial=ModelHistorial.obtener_id_historial_paciente(db,logged_user.numPaciente)
+                print(Historial)
+
+                
+                
+
                 #agrega un if, para ver que tipo de usuario es, si es 1, es un paciente, si es 2, es un doctor, 3 es un administrador
                 if logged_user.tipoUsuario == 1:
                     print(logged_user.correoElectronico)
