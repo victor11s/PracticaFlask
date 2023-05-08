@@ -1,4 +1,4 @@
-
+import json
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_mysqldb import MySQL
 from config import config
@@ -124,7 +124,8 @@ def login():
 
                 datosPaciente= ModelPaciente.obtener_info_Paciente_por_id(db, logged_user.idUsuario)
                 print(datosPaciente)
-
+               
+                
 
                 # importa la funcion obtener_id_historial_paciente de ModelHistorial
                 idHistorial = ModelHistorial.obtener_id_historial_paciente(db, logged_user.idUsuario)
