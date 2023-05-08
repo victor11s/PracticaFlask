@@ -7,6 +7,7 @@ from config import config
 from models.ModelUser import ModelUser
 from models.ModelHistorial import ModelHistorial
 from models.ModelResultado import ModelResultado
+from models.ModelPaciente import ModelPaciente
 
 
 
@@ -15,6 +16,7 @@ from models.entities.User import User
 from models.entities.User import UserRegistro
 from models.entities.Historial import Historial
 from models.entities.Resultado import Resultado
+from models.entities.Paciente import Paciente
 
 
 app = Flask(__name__)
@@ -48,7 +50,7 @@ def registroUsuario():
 
 
 
-@app.route('/login', methods=['GET', 'POST'])
+""" @app.route('/login', methods=['GET', 'POST'])
 def login():
     #pero cuando se hace una peticion post, te lleva a la pagina de login, pero toma los datos del formulario
     if request.method == 'POST':
@@ -101,7 +103,7 @@ def login():
             flash("El usuario no existe")
             return render_template('auth/login.html')
     else:
-        return render_template('auth/login.html')
+        return render_template('auth/login.html') """
     
 #copia del main------------------------------------------------------------------------------------------------------------------------------
 
@@ -109,19 +111,23 @@ def login():
 def login():
     #pero cuando se hace una peticion post, te lleva a la pagina de login, pero toma los datos del formulario
     if request.method == 'POST':
-        #print(request.form['correo'])
-        #print(request.form['contraseña'])
+        print(request.form['correo'])
+        print(request.form['contraseña'])
 
-        user=User(0,request.form['correo'],request.form['contraseña'],0)
+        user=User(0,0,request.form['correo'],(request.form['contraseña']))
         logged_user=ModelUser.login(db,user)
         if logged_user != None:
             
             if logged_user.contraseña == True:
+                print('si soy yo')
                 print(logged_user.tipoUsuario)
+
+                datosPaciente= ModelPaciente.obtener_info_Paciente_por_id(db, logged_user.idUsuario)
+                print(datosPaciente)
 
 
                 # importa la funcion obtener_id_historial_paciente de ModelHistorial
-                idHistorial = ModelHistorial.obtener_id_historial_paciente(db, logged_user.numPaciente)
+                idHistorial = ModelHistorial.obtener_id_historial_paciente(db, logged_user.idUsuario)
                 historiales = []
                 for id in idHistorial:
                     historial = ModelHistorial.obtener_historial_paciente(db, id[0])
@@ -129,7 +135,7 @@ def login():
                     historiales.append(historial_obj)
                 print(historiales)
 
-                resultado = ModelResultado.getResults(db, logged_user.numPaciente)
+                resultado = ModelResultado.getResults(db, logged_user.idUsuario)
                 resultados = []
                 for res in resultado:
                     resultado_obj = Resultado(res[0], res[1], res[2], res[3])
@@ -140,6 +146,7 @@ def login():
                 #agrega un if, para ver que tipo de usuario es, si es 1, es un paciente, si es 2, es un doctor, 3 es un administrador
                 if logged_user.tipoUsuario == 1:
                     print(logged_user.correoElectronico)
+                    print("soy del tipo 1")
                     return render_template('home.html',user=logged_user,historiales=historiales, resultados=resultados)
                 
                 elif logged_user.tipoUsuario == 2:

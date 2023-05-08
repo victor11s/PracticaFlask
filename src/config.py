@@ -7,7 +7,7 @@ class DevelopmentConfig(Config):
     MYSQL_HOST = 'localhost'
     MYSQL_USER = 'root'
     MYSQL_PASSWORD = ''
-    MYSQL_DB = 'mediapp'
+    MYSQL_DB = 'mediapp2'
 
 config = {
     'development': DevelopmentConfig
