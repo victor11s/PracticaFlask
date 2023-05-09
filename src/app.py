@@ -1,5 +1,5 @@
 import json
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, request
 from flask_mysqldb import MySQL
 from config import config
 
@@ -171,9 +171,15 @@ def login():
 
 #---------------------------------------------------------------------------------------------------------------------------------------------
     
+
+#AUN SIN PROBAR ESTA FUNCION DE REQU
 @app.route('/home')
 def home():
-    return render_template('home.html')
+    user = request.args.get('user')
+    historiales = request.args.get('historiales')
+    resultados = request.args.get('resultados')
+    return render_template('home.html', user=user, historiales=historiales, resultados=resultados)
+
 
 @app.route('/homeDoctor')
 def homeDoctor():
