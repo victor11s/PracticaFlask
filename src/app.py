@@ -37,78 +37,36 @@ def registro():
 @app.route('/registroUsuario', methods=['GET', 'POST'])
 def registroUsuario():
     if request.method == 'POST':
-        print('entre')
-        usuario=UserRegistro(1,request.form['correoElectronico'],UserRegistro.hash_password(request.form['contraseña']))
-        print(usuario)
-        paciente=PacienteRegistro(0,request.form['nombre'],request.form['apellidoPaterno'],request.form['apellidoMaterno'],request.form['fechaNacimiento'],request.form['sexo'],request.form['telefono'])
-        print(paciente)
-        # usuario=UserRegistro(request.form['nombre'],request.form['apellidoPaterno'],request.form['apellidoMaterno'],request.form['sexo'],request.form['telefono'],request.form['correo'],UserRegistro.hash_password(request.form['contraseña']))
-        print(usuario)
-        usuarioReg=ModelUser.register(db,usuario)
-        if ModelUser.register(db,usuario) == True:
-            flash("Usuario registrado")
+        # Crear objeto UserRegistro y PacienteRegistro
+        user = UserRegistro(
+            1, 
+            request.form['correo'],
+            UserRegistro.hash_password(request.form['contraseña']),
+            )
+        print(UserRegistro)
+        print(UserRegistro.hash_password(request.form['contraseña']))
+        paciente = PacienteRegistro(
+            None,
+            request.form['nombre'],
+            request.form['apellidoPaterno'],
+            request.form['apellidoMaterno'],
+            request.form['fechaNacimiento'],
+            request.form['sexo'],
+            request.form['telefono'],
+            )
+        print(paciente.idUsuario)
+        # Registrar usuario y paciente
+        try:
+            ModelUser.register(db, user)
+            ModelPaciente.register(db, user, paciente)
+            flash("Usuario y paciente registrados")
             return render_template('auth/login.html')
-        else:
-            flash("No se pudo registrar")
+        except Exception as ex:
+            flash("Error al registrar usuario y paciente: " + str(ex))
             return render_template('auth/registro.html')
-
-
-
-
-""" @app.route('/login', methods=['GET', 'POST'])
-def login():
-    #pero cuando se hace una peticion post, te lleva a la pagina de login, pero toma los datos del formulario
-    if request.method == 'POST':
-        #print(request.form['correo'])
-        #print(request.form['contraseña'])
-
-        user=User(0,request.form['correo'],request.form['contraseña'],0)
-        logged_user=ModelUser.login(db,user)
-        if logged_user != None:
-            
-            if logged_user.contraseña == True:
-                print(logged_user.tipoUsuario)
-
-
-                # importa la funcion obtener_id_historial_paciente de ModelHistorial
-                idHistorial = ModelHistorial.obtener_id_historial_paciente(db, logged_user.numPaciente)
-                historiales = []
-                for id in idHistorial:
-                    historial = ModelHistorial.obtener_historial_paciente(db, id[0])
-                    historial_obj = Historial(historial[0], historial[1], historial[2]) # crea un objeto Historial
-                    historiales.append(historial_obj)
-                print(historiales)
-
-                resultado = ModelResultado.getResults(db, logged_user.numPaciente)
-                resultados = []
-                for res in resultado:
-                    resultado_obj = Resultado(res[0], res[1], res[2], res[3])
-                    resultados.append(resultado_obj)
-                print(resultados)
-
-
-                #agrega un if, para ver que tipo de usuario es, si es 1, es un paciente, si es 2, es un doctor, 3 es un administrador
-                if logged_user.tipoUsuario == 1:
-                    print(logged_user.correoElectronico)
-                    return render_template('home.html',user=logged_user,historiales=historiales, resultados=resultados)
-                
-                elif logged_user.tipoUsuario == 2:
-                    return render_template('homeDoctor.html',user=logged_user)
-                elif logged_user.tipoUsuario == 3:
-                    return render_template('homeAdmi.html',user=logged_user)
-                else:
-                    flash("No se encontro el tipo de usuario")
-            else:   
-                
-                flash("Contraseña incorrecta")
-                return render_template('auth/login.html')
-
-        else:
-            
-            flash("El usuario no existe")
-            return render_template('auth/login.html')
     else:
-        return render_template('auth/login.html') """
+        return render_template('auth/registro.html')
+
     
 #copia del main------------------------------------------------------------------------------------------------------------------------------
 

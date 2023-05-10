@@ -1,19 +1,26 @@
 from.entities.Paciente import Paciente
+from.ModelUser import ModelUser
 
 class ModelPaciente():
     @classmethod # CAMBIAR PARA QUE FUNCIONEEEEEE
-    def register(self,db,user): 
-        #haz el mismo metodo de arriba, pero sin pedir el tipo de usuario, ademas pide el nombre, apellido paterno y materno, sexo, telefono y su correo y contraseña, usando el modelo de UserRegistro
+    def register(cls, db, user, paciente):
+        # Registrar usuario primero
+        ModelUser.register(db, user)
+
+        # Obtener idUsuario generado automáticamente
+        cursor = db.connection.cursor()
+        idUsuario = cursor.lastrowid
+
+        # Insertar registro de paciente
         try:
             cursor = db.connection.cursor()
-            sql = """INSERT INTO infousuarios (idUsuario, nombre, apellidoPaterno, apellidoMaterno, sexo, telefono, correoElectronico, contraseña) 
-            VALUES ('{}','{}','{}','{}','{}','{}','{}','{}') """.format(user.idUsuario, user.nombre, user.apellidoPaterno, user.apellidoMaterno, user.sexo, user.telefono, user.correoElectronico, user.contraseña)            
+            sql = """INSERT INTO pacientes (idUsuario, fechaNacimiento, peso, estatura) 
+            VALUES ({},'{}',{},'{}') """.format(idUsuario, paciente.fechaNacimiento, paciente.peso, paciente.estatura)
             cursor.execute(sql)
             db.connection.commit()
-            print("Usuario registrado")
-            return True
+            print("Paciente registrado")
         except Exception as ex:
-            print("No se pudo registrar")
+            print("No se pudo registrar el paciente")
             raise Exception(ex)
         
     @classmethod
