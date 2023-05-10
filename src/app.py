@@ -17,6 +17,7 @@ from models.entities.User import UserRegistro
 from models.entities.Historial import Historial
 from models.entities.Resultado import Resultado
 from models.entities.Paciente import Paciente
+from models.entities.Paciente import PacienteRegistro
 
 
 app = Flask(__name__)
@@ -37,7 +38,11 @@ def registro():
 def registroUsuario():
     if request.method == 'POST':
         print('entre')
-        usuario=UserRegistro(request.form['nombre'],request.form['apellidoPaterno'],request.form['apellidoMaterno'],request.form['sexo'],request.form['telefono'],request.form['correo'],UserRegistro.hash_password(request.form['contraseña']))
+        usuario=UserRegistro(1,request.form['correoElectronico'],UserRegistro.hash_password(request.form['contraseña']))
+        print(usuario)
+        paciente=PacienteRegistro(0,request.form['nombre'],request.form['apellidoPaterno'],request.form['apellidoMaterno'],request.form['fechaNacimiento'],request.form['sexo'],request.form['telefono'])
+        print(paciente)
+        # usuario=UserRegistro(request.form['nombre'],request.form['apellidoPaterno'],request.form['apellidoMaterno'],request.form['sexo'],request.form['telefono'],request.form['correo'],UserRegistro.hash_password(request.form['contraseña']))
         print(usuario)
         usuarioReg=ModelUser.register(db,usuario)
         if ModelUser.register(db,usuario) == True:

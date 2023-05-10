@@ -75,7 +75,8 @@ class ModelUser():
         #haz el mismo metodo de arriba, pero sin pedir el tipo de usuario, ademas pide el nombre, apellido paterno y materno, sexo, telefono y su correo y contraseña, usando el modelo de UserRegistro
         try:
             cursor = db.connection.cursor()
-            sql=""" INSERT INTO paciente (nombre, apellidoPaterno, apellidoMaterno, sexo, telefono, correoElectronico, contraseña) VALUES ('{}','{}','{}','{}','{}','{}','{}') """.format(user.nombre,user.apellidoPaterno,user.apellidoMaterno,user.sexo,user.telefono,user.correoElectronico,user.contraseña)
+            sql = """INSERT INTO usuarios (tipoUsuario, correoElectronico, contraseña) 
+            VALUES ('{}','{}','{}')""".format(user.tipoUsuario,user.correoElectronico,user.contraseña)
             cursor.execute(sql)
             db.connection.commit()
             print("Usuario registrado")
