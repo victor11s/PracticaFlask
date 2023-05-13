@@ -33,3 +33,41 @@ class ModelPaciente():
             return row
         except Exception as ex:
             raise Exception(ex)
+
+
+     #--------------por ver si jalan o no-----------------------------------------------------------   
+    #llamar a store procedure, que obtiene los id de los paciente que han sido atendidos por ese medico
+    @classmethod
+    def obtener_infoPaciente_atendido_por_Medico(self,db,id):
+        try:
+            cursor = db.connection.cursor()
+            sql=""" CALL obtener_infoPaciente_atendido_por_Medico({}) """.format(id)
+            cursor.execute(sql)
+            row=cursor.fetchone()
+            return row
+        except Exception as ex:
+            raise Exception(ex)
+        
+     #llamar a metodo que me trae la informacion de esos pacientes del historial   
+    @classmethod
+    def obtener_infoPaciente_atendido_por_Medico_historial(self,db,id):
+        try:
+            cursor = db.connection.cursor()
+            sql=""" CALL obtener_infoPaciente_atendido_por_Medico_historial({}) """.format(id)
+            cursor.execute(sql)
+            row=cursor.fetchone()
+            return row
+        except Exception as ex:
+            raise Exception(ex)
+    
+    #llamar a metodo que me trae la informacion de esos pacientes de resultados
+    @classmethod
+    def obtener_infoPaciente_atendido_por_Medico_resultados(self,db,id):
+        try:
+            cursor = db.connection.cursor()
+            sql=""" CALL obtener_infoPaciente_atendido_por_Medico_resultados({}) """.format(id)
+            cursor.execute(sql)
+            row=cursor.fetchone()
+            return row
+        except Exception as ex:
+            raise Exception(ex)

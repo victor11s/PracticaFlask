@@ -11,49 +11,125 @@
 
 
 <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-info navbar-expand-sm">
-    <!-- Agrega un logo -->
-    <img src="{{url_for('static', filename= 'img/prueba.png')}}" alt="" width="72" height="57" style="margin-left: 10px;">
-    <a class="navbar-brand" style="margin-left: 15px;" href="#">MediAPP</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse justify-content-end align-items-center" id="navbarCollapse">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a class="nav-link" href="#">Calendario</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Mis Pacientes</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Mi Perfil</a>
-        </li>
-      </ul>
-      <!-- Agrega boton de cerrar sesion al final de la navbar hasta el lado derecho -->
-      <div class="d-flex">
-        <a class="btn btn-danger" href="/logout" style="margin-left: 10px;">Cerrar Sesión</a>
+  <!-- Agrega un logo -->
+  <img src="{{url_for('static', filename= 'img/prueba.png')}}" alt="" width="72" height="57" style="margin-left: 10px;">
+  <a class="navbar-brand" style="margin-left: 15px;" href="#">MediAPP</a>
+  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+    aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse justify-content-end align-items-center" id="navbarCollapse">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Historial</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Resultados</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Agendar</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Mi Perfil</a>
+      </li>
+    </ul>
+    <!-- Agrega boton de cerrar sesion al final de la navbar hasta el lado derecho -->
+    <div class="d-flex">
+      <a class="btn btn-danger" href="/logout" style="margin-left:10px; margin-right:10px">Cerrar Sesión</a>
+    </div>
+  </div>
+</nav>
+
+
+<main role="main" class="container">
+  <h1 class="mt-5">Bienvenido/a {{ user.correoElectronico }}</h1>
+
+  <h2 class="mb-3">Historial</h2>
+
+</main>
+
+
+<!--Aqui comienza el contenido-->
+
+<!--Div de menor tamaño en horizontal que la pantalla-->
+
+<div style="max-width: 800px; margin: 0 auto;">
+
+  {% for historial in historiales %}
+  <div class="accordion" id="accordionExample">
+    <div class="accordion-item mt-1">
+      <h2 class="accordion-header">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+          data-bs-target="#collapse{{ historial.idHistorial }}" aria-expanded="true"
+          aria-controls="collapse{{ historial.idHistorial }}">
+          <strong>Historial #{{ historial.idHistorial }}</strong>
+        </button>
+      </h2>
+      <div id="collapse{{ historial.idHistorial }}" class="accordion-collapse collapse show"
+        data-bs-parent="#accordionHistorial">
+        <div class="accordion-body text-start">
+          <strong class="text-start">Enfermedad:</strong> {{ historial.enfermedad }}<br>
+          <strong class="text-start">Detalle:</strong> {{ historial.numConsulta }}<br>
+
+        </div>
       </div>
     </div>
-  </nav>
-  
-  
-  <main role="main" class="container">
-    <h1 class="mt-5">Bienvenido/a Doctor {{ user.correoElectronico }}</h1>
-   
-  </main>
+  </div>
+  {% endfor %}
 
-  <footer class="footer">
-    <div class="container">
-      <span class="text-muted">MediAPP derechos reservados</span>
+
+  <!--Si muevo el data-bs-parent no se abren al mismo tiempo -->
+
+  <h2 class="mb-3 mt-2">Resultados</h2>
+  {% for resultado in resultados %}
+  <div class="accordion" id="accordionResultados">
+    <div class="accordion-item mt-1">
+      <h2 class="accordion-header">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+          data-bs-target="#collapse{{ resultado.idExamen }}" aria-expanded="true"
+          aria-controls="collapse{{ resultado.idExamen }}">
+          <strong>Examen #{{ resultado.idExamen }} - Fecha: {{ resultado.fechaExamen }}</strong>
+        </button>
+      </h2>
+      <div id="collapse{{ resultado.idExamen }}" class="accordion-collapse collapse show"
+        data-bs-parent="#accordionResultados">
+        <div class="accordion-body text-start">
+          <strong class="text-start">Resultado</strong> {{ resultado.resultadosExamen }}<br>
+
+        </div>
+      </div>
     </div>
-  </footer>
+  </div>
+  {% endfor %}
 
 
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-  <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
-  <script src="../../assets/js/vendor/popper.min.js"></script>
-  <script src="../../dist/js/bootstrap.min.js"></script>
-  
+
+
+
+
+
+</div>
+
+
+
+
+
+
+<!--Aqui termina el contenido-->
+
+<footer class="footer">
+  <div class="container">
+    <span class="text-muted">MediAPP derechos reservados</span>
+  </div>
+</footer>
+
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+  integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+<script src="../../assets/js/vendor/popper.min.js"></script>
+<script src="../../dist/js/bootstrap.min.js"></script>
+
 
 
 
