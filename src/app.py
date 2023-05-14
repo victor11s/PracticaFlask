@@ -85,22 +85,24 @@ def login():
                 #print('si soy yo')
                 #print(logged_user.tipoUsuario)
 
+
+
+                #MANDO LLAMAR A MI QUERY, QUE ME DEVUELVE LOS DATOS DEL PACIENTE
                 datosPaciente= ModelPaciente.obtener_info_Paciente_por_id(db, logged_user.idUsuario)
-                
-                #print(datosPaciente)
-               
             
-                # importa la funcion obtener_id_historial_paciente de ModelHistorial
+                #Importa la funcion obtener_id_historial_paciente de ModelHistorial
                 idHistorial = ModelHistorial.obtener_id_historial_paciente(db, logged_user.idUsuario)
                 historiales = []
+                #PARA CADA ID DE HISTORIAL, OBTENEMOS LOS DATOS DEL HISTORIAL
                 for id in idHistorial:
                     historial = ModelHistorial.obtener_historial_paciente(db, id[0])
                     historial_obj = Historial(historial[0], historial[1], historial[2]) # crea un objeto Historial
                     historiales.append(historial_obj)
                 print(historiales)
-
+                #Importa la funcion obtener_id_historial_paciente de ModelHistorial
                 resultado = ModelResultado.getResults(db, logged_user.idUsuario)
                 resultados = []
+                #PARA CADA ID DE HISTORIAL, OBTENEMOS LOS DATOS DEL HISTORIAL
                 for res in resultado:
                     resultado_obj = Resultado(res[0], res[1], res[2], res[3])
                     resultados.append(resultado_obj)
@@ -110,6 +112,7 @@ def login():
                 #agrega un if, para ver que tipo de usuario es, si es 1, es un paciente, si es 2, es un doctor, 3 es un administrador
                 if logged_user.tipoUsuario == 1:
 
+                    #los transformo en tipo diccionario, antes de almacenarlos en la sesion
                     paciente_dict = {
                     'idPaciente': datosPaciente[0],
                     'nombre': datosPaciente[1],
@@ -119,10 +122,8 @@ def login():
                     'sexo': datosPaciente[5],
                     'telefono': datosPaciente[6]
                     }
-
+                    #almaceno los datos del paciente en la sesion
                     session['paciente'] = paciente_dict
-
-
 
                     #los transformo en tipo diccionario, antes de almacenarlos en la sesion
                     user_dict = {
@@ -131,7 +132,6 @@ def login():
                         'correoElectronico': logged_user.correoElectronico,
                         'contraseña': logged_user.contraseña,
                         }
-                    
                     session['user'] = user_dict
 
                     historiales_dict = [{'idHistorial': hist.idHistorial, 'numConsulta': hist.numConsulta, 'enfermedad': hist.enfermedad} for hist in historiales]
@@ -139,7 +139,6 @@ def login():
 
                     resultados_dict = [{'numPaciente': res.numPaciente, 'idExamen': res.idExamen, 'fechaExamen': res.fechaExamen, 'resultadosExamen': res.resultadosExamen} for res in resultados]
                     session['resultados'] = resultados_dict
-
 
                     return redirect(url_for('home'))
                 
