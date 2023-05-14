@@ -1,5 +1,5 @@
 import json
-from flask import Flask, render_template, request, redirect, url_for, flash, sessions
+from flask import Flask, render_template, request, redirect, url_for, flash, session
 from flask_mysqldb import MySQL
 from config import config
 
@@ -111,7 +111,24 @@ def login():
 
                     #print(logged_user.correoElectronico)
                     #print("soy del tipo 1")
-                    return redirect(url_for('home', user=logged_user, historiales=historiales, resultados=resultados))
+                    #los transformo en tipo diccionario, antes de almacenarlos en la sesion
+                    user_dict = {
+                        'idUsuario': logged_user.idUsuario,
+                        'tipoUsuario': logged_user.tipoUsuario,
+                        'correoElectronico': logged_user.correoElectronico,
+                        'contraseña': logged_user.contraseña,
+                        }
+                    
+                    session['user'] = user_dict
+
+                    historiales_dict = [{'idHistorial': hist.idHistorial, 'idUsuario': hist.idUsuario, 'fecha': hist.fecha} for hist in historiales]
+                    session['historiales'] = historiales_dict
+
+                    resultados_dict = [{'numPaciente': res.numPaciente, 'idExamen': res.idExamen, 'fechaExamen': res.fechaExamen, 'resultadosExamen': res.resultadosExamen} for res in resultados]
+                    session['resultados'] = resultados_dict
+
+
+                    return redirect(url_for('home'))
                 
                 elif logged_user.tipoUsuario == 2:
                     return render_template('homeDoctor.html',user=logged_user)
@@ -138,10 +155,16 @@ def login():
 #AUN SIN PROBAR ESTA FUNCION DE REQU
 @app.route('/home')
 def home():
-    user = request.args.get('user')
-    historiales = request.args.get('historiales')
-    resultados = request.args.get('resultados')
-    print("resultados: ", resultados)
+    #los vuelvo a converitr en objetos cuando los recupero de la sesion
+    user_dict = session.get('user')
+    user = User(user_dict['idUsuario'], user_dict['tipoUsuario'], user_dict['correoElectronico'], user_dict['contraseña'])
+
+    historiales_dict = session.get('historiales')
+    historiales = [Historial(hist_dict['idHistorial'], hist_dict['idUsuario'], hist_dict['fecha']) for hist_dict in historiales_dict]
+
+    resultados_dict = session.get('resultados')
+    resultados = [Resultado(res_dict['numPaciente'], res_dict['idExamen'], res_dict['fechaExamen'], res_dict['resultadosExamen']) for res_dict in resultados_dict]
+
     return render_template('home.html', user=user, historiales=historiales, resultados=resultados)
 
 
