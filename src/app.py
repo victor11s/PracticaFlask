@@ -1,5 +1,5 @@
 import json
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, sessions
 from flask_mysqldb import MySQL
 from config import config
 
@@ -74,22 +74,21 @@ def registroUsuario():
 def login():
     #pero cuando se hace una peticion post, te lleva a la pagina de login, pero toma los datos del formulario
     if request.method == 'POST':
-        print(request.form['correo'])
-        print(request.form['contraseña'])
+        #print(request.form['correo'])
+        #print(request.form['contraseña'])
 
         user=User(0,0,request.form['correo'],(request.form['contraseña']))
         logged_user=ModelUser.login(db,user)
         if logged_user != None:
             
             if logged_user.contraseña == True:
-                print('si soy yo')
-                print(logged_user.tipoUsuario)
+                #print('si soy yo')
+                #print(logged_user.tipoUsuario)
 
                 datosPaciente= ModelPaciente.obtener_info_Paciente_por_id(db, logged_user.idUsuario)
-                print(datosPaciente)
+                #print(datosPaciente)
                
-                
-
+            
                 # importa la funcion obtener_id_historial_paciente de ModelHistorial
                 idHistorial = ModelHistorial.obtener_id_historial_paciente(db, logged_user.idUsuario)
                 historiales = []
@@ -109,9 +108,10 @@ def login():
 
                 #agrega un if, para ver que tipo de usuario es, si es 1, es un paciente, si es 2, es un doctor, 3 es un administrador
                 if logged_user.tipoUsuario == 1:
-                    print(logged_user.correoElectronico)
-                    print("soy del tipo 1")
-                    return render_template('home.html',user=logged_user,historiales=historiales, resultados=resultados)
+
+                    #print(logged_user.correoElectronico)
+                    #print("soy del tipo 1")
+                    return redirect(url_for('home', user=logged_user, historiales=historiales, resultados=resultados))
                 
                 elif logged_user.tipoUsuario == 2:
                     return render_template('homeDoctor.html',user=logged_user)
@@ -141,6 +141,7 @@ def home():
     user = request.args.get('user')
     historiales = request.args.get('historiales')
     resultados = request.args.get('resultados')
+    print("resultados: ", resultados)
     return render_template('home.html', user=user, historiales=historiales, resultados=resultados)
 
 
@@ -151,6 +152,13 @@ def homeDoctor():
 @app.route('/homeAdmi')
 def homeAdmi():
     return render_template('homeAdmi.html')
+
+
+@app.route('/logout')
+def logout():
+    # Limpiar la sesión
+    session.clear()
+    return redirect('/login')
 
 if __name__ == '__main__':
     #esto me sirve para cargar la configuracion de desarrollo
