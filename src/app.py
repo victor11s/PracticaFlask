@@ -181,7 +181,7 @@ def homeAdmi():
 def logout():
     # Limpiar la sesión
     session.clear()
-    return redirect('/login')
+    return redirect('/')
 
 if __name__ == '__main__':
     #esto me sirve para cargar la configuracion de desarrollo
