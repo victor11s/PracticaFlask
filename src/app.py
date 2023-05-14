@@ -86,6 +86,7 @@ def login():
                 #print(logged_user.tipoUsuario)
 
                 datosPaciente= ModelPaciente.obtener_info_Paciente_por_id(db, logged_user.idUsuario)
+                
                 #print(datosPaciente)
                
             
@@ -109,8 +110,20 @@ def login():
                 #agrega un if, para ver que tipo de usuario es, si es 1, es un paciente, si es 2, es un doctor, 3 es un administrador
                 if logged_user.tipoUsuario == 1:
 
-                    #print(logged_user.correoElectronico)
-                    #print("soy del tipo 1")
+                    paciente_dict = {
+                    'idPaciente': datosPaciente[0],
+                    'nombre': datosPaciente[1],
+                    'apellidoPaterno': datosPaciente[2],
+                    'apellidoMaterno': datosPaciente[3],
+                    'fechaNacimiento': datosPaciente[4],
+                    'sexo': datosPaciente[5],
+                    'telefono': datosPaciente[6]
+                    }
+
+                    session['paciente'] = paciente_dict
+
+
+
                     #los transformo en tipo diccionario, antes de almacenarlos en la sesion
                     user_dict = {
                         'idUsuario': logged_user.idUsuario,
@@ -121,7 +134,7 @@ def login():
                     
                     session['user'] = user_dict
 
-                    historiales_dict = [{'idHistorial': hist.idHistorial, 'idUsuario': hist.idUsuario, 'fecha': hist.fecha} for hist in historiales]
+                    historiales_dict = [{'idHistorial': hist.idHistorial, 'numConsulta': hist.numConsulta, 'enfermedad': hist.enfermedad} for hist in historiales]
                     session['historiales'] = historiales_dict
 
                     resultados_dict = [{'numPaciente': res.numPaciente, 'idExamen': res.idExamen, 'fechaExamen': res.fechaExamen, 'resultadosExamen': res.resultadosExamen} for res in resultados]
@@ -160,12 +173,15 @@ def home():
     user = User(user_dict['idUsuario'], user_dict['tipoUsuario'], user_dict['correoElectronico'], user_dict['contraseña'])
 
     historiales_dict = session.get('historiales')
-    historiales = [Historial(hist_dict['idHistorial'], hist_dict['idUsuario'], hist_dict['fecha']) for hist_dict in historiales_dict]
+    historiales = [Historial(hist_dict['idHistorial'], hist_dict['numConsulta'], hist_dict['enfermedad']) for hist_dict in historiales_dict]
 
     resultados_dict = session.get('resultados')
     resultados = [Resultado(res_dict['numPaciente'], res_dict['idExamen'], res_dict['fechaExamen'], res_dict['resultadosExamen']) for res_dict in resultados_dict]
 
-    return render_template('home.html', user=user, historiales=historiales, resultados=resultados)
+    paciente_dict = session.get('paciente')
+    paciente = Paciente(paciente_dict['idPaciente'], paciente_dict['nombre'], paciente_dict['apellidoPaterno'], paciente_dict['apellidoMaterno'], paciente_dict['fechaNacimiento'], paciente_dict['sexo'], paciente_dict['telefono'])
+
+    return render_template('home.html', user=user, historiales=historiales, resultados=resultados, paciente=paciente)
 
 
 @app.route('/homeDoctor')
