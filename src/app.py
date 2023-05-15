@@ -9,6 +9,7 @@ from models.ModelHistorial import ModelHistorial
 from models.ModelResultado import ModelResultado
 from models.ModelPaciente import ModelPaciente
 from models.ModelMedico import ModelMedico
+from models.ModelAdministrador import ModelAdministrador
 
 
 
@@ -20,6 +21,7 @@ from models.entities.Resultado import Resultado
 from models.entities.Paciente import Paciente
 from models.entities.Paciente import PacienteRegistro
 from models.entities.Medico import Medico
+from models.entities.Administrador import Administrador
 
 
 app = Flask(__name__)
@@ -117,7 +119,7 @@ def login():
                 #TERMINA DOCTOR----------------------------------------------------------------------------------------------------------------------------
 
                 #TODOS ESTOS SON PARA  ADMINISTRADOR----------------------------------------------------------------------------------------------------------------------------
-
+                datosAdmin= ModelAdministrador.obtener_info_Administrador_por_id(db, logged_user.idUsuario)
                 #TERMINA ADMINISTRADOR----------------------------------------------------------------------------------------------------------------------------
 
 
@@ -181,7 +183,31 @@ def login():
                     return redirect(url_for('homeDoctor'))
                     
                 elif logged_user.tipoUsuario == 3:
-                    return render_template('homeAdmi.html',user=logged_user)
+                    
+                    #creacion del diccionario del usuario
+                    user_dict = {
+                        'idUsuario': logged_user.idUsuario,
+                        'tipoUsuario': logged_user.tipoUsuario,
+                        'correoElectronico': logged_user.correoElectronico,
+                        'contraseña': logged_user.contraseña,
+                        }
+                    session['user'] = user_dict
+
+                    #creacion del diccionario del administrador
+                    admin_dict = {
+                    'idAdmin': datosAdmin[0],
+                    'nombre': datosAdmin[1],
+                    'apellidoPaterno': datosAdmin[2],
+                    'apellidoMaterno': datosAdmin[3],
+                    'fechaNacimiento': datosAdmin[4],
+                    'sexo': datosAdmin[5],
+                    'telefono': datosAdmin[6],
+                    }
+                    session['admin'] = admin_dict
+
+
+
+                    return redirect(url_for('homeAdmi'))
                 else:
                     flash("No se encontro el tipo de usuario")
             else:   
@@ -231,7 +257,12 @@ def homeDoctor():
 
 @app.route('/homeAdmi')
 def homeAdmi():
-    return render_template('homeAdmi.html')
+    user_dict = session.get('user')
+    user = User(user_dict['idUsuario'], user_dict['tipoUsuario'], user_dict['correoElectronico'], user_dict['contraseña'])
+
+    admin_dict = session.get('admin')
+    admin = Administrador(admin_dict['idAdmin'], admin_dict['nombre'], admin_dict['apellidoPaterno'], admin_dict['apellidoMaterno'], admin_dict['fechaNacimiento'], admin_dict['sexo'], admin_dict['telefono'])
+    return render_template('homeAdmi.html', user=user, admin=admin)
 
 
 @app.route('/logout')
