@@ -8,6 +8,7 @@ from models.ModelUser import ModelUser
 from models.ModelHistorial import ModelHistorial
 from models.ModelResultado import ModelResultado
 from models.ModelPaciente import ModelPaciente
+from models.ModelMedico import ModelMedico
 
 
 
@@ -18,6 +19,7 @@ from models.entities.Historial import Historial
 from models.entities.Resultado import Resultado
 from models.entities.Paciente import Paciente
 from models.entities.Paciente import PacienteRegistro
+from models.entities.Medico import Medico
 
 
 app = Flask(__name__)
@@ -86,7 +88,7 @@ def login():
                 #print(logged_user.tipoUsuario)
 
 
-
+                #TODOS ESTOS SON PARA  PACIENTE----------------------------------------------------------------------------------------------------------------------------
                 #MANDO LLAMAR A MI QUERY, QUE ME DEVUELVE LOS DATOS DEL PACIENTE
                 datosPaciente= ModelPaciente.obtener_info_Paciente_por_id(db, logged_user.idUsuario)
             
@@ -107,6 +109,16 @@ def login():
                     resultado_obj = Resultado(res[0], res[1], res[2], res[3])
                     resultados.append(resultado_obj)
                 print(resultados)
+                #TERMIUNA PACIENTE----------------------------------------------------------------------------------------------------------------------------
+                
+                #TODOS ESTOS SON PARA  DOCTOR----------------------------------------------------------------------------------------------------------------------------
+                datosMedico= ModelMedico.obtener_info_Medico_por_id(db, logged_user.idUsuario)
+
+                #TERMINA DOCTOR----------------------------------------------------------------------------------------------------------------------------
+
+                #TODOS ESTOS SON PARA  ADMINISTRADOR----------------------------------------------------------------------------------------------------------------------------
+
+                #TERMINA ADMINISTRADOR----------------------------------------------------------------------------------------------------------------------------
 
 
                 #agrega un if, para ver que tipo de usuario es, si es 1, es un paciente, si es 2, es un doctor, 3 es un administrador
@@ -143,7 +155,31 @@ def login():
                     return redirect(url_for('home'))
                 
                 elif logged_user.tipoUsuario == 2:
-                    return render_template('homeDoctor.html',user=logged_user)
+                    #creacion del diccionario del usuario 
+                    user_dict = {
+                        'idUsuario': logged_user.idUsuario,
+                        'tipoUsuario': logged_user.tipoUsuario,
+                        'correoElectronico': logged_user.correoElectronico,
+                        'contraseña': logged_user.contraseña,
+                        }
+                    #almacenamiento del diccionario en la sesion
+                    session['user'] = user_dict
+
+                    #creacion del diccionario del medico
+                    medico_dict = {
+                    'idMedico': datosMedico[0],
+                    'nombre': datosMedico[1],
+                    'apellidoPaterno': datosMedico[2],
+                    'apellidoMaterno': datosMedico[3],
+                    'fechaNacimiento': datosMedico[4],
+                    'sexo': datosMedico[5],
+                    'telefono': datosMedico[6],
+                    }
+                    #almacenamiento del diccionario en la sesion
+                    session['medico'] = medico_dict
+
+                    return redirect(url_for('homeDoctor'))
+                    
                 elif logged_user.tipoUsuario == 3:
                     return render_template('homeAdmi.html',user=logged_user)
                 else:
@@ -185,7 +221,13 @@ def home():
 
 @app.route('/homeDoctor')
 def homeDoctor():
-    return render_template('homeDoctor.html')
+    user_dict = session.get('user')
+    user = User(user_dict['idUsuario'], user_dict['tipoUsuario'], user_dict['correoElectronico'], user_dict['contraseña'])
+
+    medico_dict = session.get('medico')
+    medico = Medico(medico_dict['idMedico'], medico_dict['nombre'], medico_dict['apellidoPaterno'], medico_dict['apellidoMaterno'], medico_dict['fechaNacimiento'], medico_dict['sexo'], medico_dict['telefono'])
+    
+    return render_template('homeDoctor.html', user=user, medico=medico)
 
 @app.route('/homeAdmi')
 def homeAdmi():
