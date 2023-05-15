@@ -10,6 +10,7 @@ from models.ModelResultado import ModelResultado
 from models.ModelPaciente import ModelPaciente
 from models.ModelMedico import ModelMedico
 from models.ModelAdministrador import ModelAdministrador
+from models.ModelCita import ModelCita
 
 
 
@@ -22,6 +23,7 @@ from models.entities.Paciente import Paciente
 from models.entities.Paciente import PacienteRegistro
 from models.entities.Medico import Medico
 from models.entities.Administrador import Administrador
+from models.entities.Cita import Cita
 
 
 app = Flask(__name__)
@@ -264,6 +266,45 @@ def homeAdmi():
     admin = Administrador(admin_dict['idAdmin'], admin_dict['nombre'], admin_dict['apellidoPaterno'], admin_dict['apellidoMaterno'], admin_dict['fechaNacimiento'], admin_dict['sexo'], admin_dict['telefono'])
     return render_template('homeAdmi.html', user=user, admin=admin)
 
+#----Agendar Citas------------------------------------------------------------------------------------------------------------------------------
+@app.route('/agendar')
+def agendar():
+    user_dict = session.get('user')
+    user = User(user_dict['idUsuario'], user_dict['tipoUsuario'], user_dict['correoElectronico'], user_dict['contraseña'])
+
+    paciente_dict = session.get('paciente')
+    paciente = Paciente(paciente_dict['idPaciente'], paciente_dict['nombre'], paciente_dict['apellidoPaterno'], paciente_dict['apellidoMaterno'], paciente_dict['fechaNacimiento'], paciente_dict['sexo'], paciente_dict['telefono'])
+
+    datosEspecialidad = ModelCita.obtenerEspecialidades(db)
+    print("soy las especilidades",datosEspecialidad)
+
+    #hago diccionario de especialidades
+    especializacion_dict = [{'idEspecialidad': datosEspecialidad[0], 'nombreEspecialidad': datosEspecialidad[1]} for datosEspecialidad in datosEspecialidad]
+    session['especializacion'] = especializacion_dict
+
+    #recupero la informacion de la sesion
+    
+
+
+    return render_template('agendar.html', user=user, paciente=paciente, especialidad=especializacion_dict)
+
+
+
+@app.route('/agendar_cita', methods=['POST'])
+def agendar_cita():
+    """ # Recuperar los datos del formulario
+    exito = agendar_cita_funcion()  # Esta función debe retornar True si la cita fue agendada con éxito y False en caso contrario.
+    
+    if exito:
+        flash('Cita agendada con éxito', 'success')
+    else:
+        flash('Hubo un error al agendar la cita', 'danger')
+    return redirect(url_for('ruta_donde_se_muestra_el_mensaje_flash'))
+ """
+
+
+
+#----Termina Agendar Citas------------------------------------------------------------------------------------------------------------------------------
 
 @app.route('/logout')
 def logout():

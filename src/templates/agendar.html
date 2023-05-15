@@ -1,0 +1,123 @@
+{% extends './base.html' %}
+
+{% block title %} Home {{ user.correoElectronico }} {% endblock %}
+
+{% block customCSS %}
+<link rel="stylesheet" href="{{url_for('static', filename = 'css/sticky-footer-navbar.css')}}">
+
+{% endblock %}
+
+{% block body %}
+
+
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-info navbar-expand-sm">
+  <!-- Agrega un logo -->
+  <img src="{{url_for('static', filename= 'img/prueba.png')}}" alt="" width="72" height="57" style="margin-left: 10px;">
+  <a class="navbar-brand" style="margin-left: 15px;" href="{{ url_for('homeAdmi') }}">MediAPP</a>
+  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+    aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse justify-content-end align-items-center" id="navbarCollapse">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="{{ url_for('home') }}">Dashboard</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('agendar') }}">Citas</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Mi Perfil</a>
+      </li>
+    </ul>
+    <!-- Agrega boton de cerrar sesion al final de la navbar hasta el lado derecho -->
+    <div class="d-flex">
+      <a class="btn btn-danger" href="/logout" style="margin-left:10px; margin-right:10px">Cerrar Sesión</a>
+    </div>
+  </div>
+</nav>
+
+
+<main role="main" class="container">
+  <h1 class="mt-5">Agenda tu cita {{ paciente.nombre }}</h1>
+  {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+  {% for category, message in messages %}
+  <div class="alert alert-{{ category }}">
+    {{ message }}
+  </div>
+  {% endfor %}
+  {% endif %}
+  {% endwith %}
+  <div class="row mt-5">
+    <div class="col-3">
+      <label for="especialidades">Especialidades</label>
+      <select class="form-select" id="especialidades" name="especialidad">
+        <option selected>Elige...</option>
+        {% if especialidad %}
+        {% for especialidad_item in especialidad %}
+        <option value="{{ especialidad_item.idEspecialidad }}">{{ especialidad_item.nombreEspecialidad }}</option>
+        {% endfor %}
+        {% endif %}
+      </select>
+    </div>
+
+    <div class="col-9">
+      <!-- Añade el atributo action al formulario -->
+      <form action="{{ url_for('agendar_cita') }}" method="post">
+        <div class="form-group">
+          <label for="doctor">Elige un doctor</label>
+          <select class="form-select" id="doctor" name="doctor">
+            <option selected>Elige...</option>
+            <option value="1">Doctor 1</option>
+            <option value="2">Doctor 2</option>
+            <option value="3">Doctor 3</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="horarios">Elige un horario</label>
+          <select class="form-select" id="horarios" name="horario">
+            <option selected>Elige...</option>
+            <option value="1">13:00-14:00</option>
+            <option value="2">14:00-15:00</option>
+            <option value="3">15:00-16:00</option>
+            <option value="4">16:00-17:00</option>
+            <option value="5">17:00-18:00</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">Reservar cita</button>
+      </form>
+    </div>
+  </div>
+</main>
+
+
+
+</div>
+
+
+
+
+
+
+<!--Aqui termina el contenido-->
+
+<footer class="footer">
+  <div class="container">
+    <span class="text-muted">MediAPP derechos reservados</span>
+  </div>
+</footer>
+
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+  integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+<script src="../../assets/js/vendor/popper.min.js"></script>
+<script src="../../dist/js/bootstrap.min.js"></script>
+
+
+
+
+
+
+{% endblock%}
