@@ -118,8 +118,26 @@
 <script src="../../assets/js/vendor/popper.min.js"></script>
 <script src="../../dist/js/bootstrap.min.js"></script>
 
+<!--Para obtener los medicos de esa especialidad -->
+<script>
+$(document).ready(function() {
+  $('#especialidades').change(function() {
+    // Obtén el id de la especialidad seleccionada
+    var idEspecialidad = $(this).val();
 
+    // Realiza una solicitud GET a la ruta de doctores
+    $.get('/doctores/' + idEspecialidad, function(data) {
+      // Vacía el dropdown de doctores
+      $('#doctor').empty();
 
+      // Añade cada doctor a la lista
+      $.each(data, function(index, doctor) {
+        $('#doctor').append('<option value="' + doctor.idUsuario + '">' + doctor.nombre + ' ' + doctor.apellidoPaterno + '</option>');
+      });
+    });
+  });
+});
+</script>
 
 
 

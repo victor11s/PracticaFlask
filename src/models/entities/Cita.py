@@ -12,4 +12,5 @@ class CitaReserva():
         self.idCita = idCita
         self.idUsuarioPaciente = idUsuarioPaciente
         self.idUsuarioMedico = idUsuarioMedico
-        
+
+

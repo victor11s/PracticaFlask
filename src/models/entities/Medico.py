@@ -14,3 +14,4 @@ class MedicoEspecialidad():
     def __init__(self,idMedico, idEspecialidad):
         self.idMedico = idMedico
         self.idEspecialidad = idEspecialidad
+

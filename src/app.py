@@ -1,5 +1,5 @@
 import json
-from flask import Flask, render_template, request, redirect, url_for, flash, session
+from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
 from flask_mysqldb import MySQL
 from config import config
 
@@ -301,6 +301,12 @@ def agendar_cita():
         flash('Hubo un error al agendar la cita', 'danger')
     return redirect(url_for('ruta_donde_se_muestra_el_mensaje_flash'))
  """
+
+
+@app.route('/doctores/<int:id_especialidad>', methods=['GET'])
+def get_doctores(id_especialidad):
+    doctores = ModelMedico.obtenerDoctoresEspecialidad(db, id_especialidad)
+    return jsonify(doctores)
 
 
 

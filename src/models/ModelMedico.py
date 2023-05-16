@@ -23,3 +23,6 @@ class ModelMedico():
             return row
         except Exception as ex:
             raise Exception(ex)
+        
+
+

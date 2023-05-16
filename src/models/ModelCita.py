@@ -22,3 +22,14 @@ class ModelCita():
             return row
         except Exception as ex:
             raise Exception(ex)
+        
+    @classmethod
+    def obtenerDoctoresPorEspecialidad(self, db, especialidad_id):
+        try:
+            cursor = db.connection.cursor()
+            sql = """ CALL obtener_doctores_por_especialidad({}) """.format(especialidad_id)
+            cursor.execute(sql)
+            rows = cursor.fetchall()
+            return rows
+        except Exception as ex:
+            raise Exception(ex)
