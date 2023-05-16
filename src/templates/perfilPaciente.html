@@ -36,7 +36,7 @@
 </nav>
 
 <main role="main" class="container">
-    <h1 class="mt-5">Perfil de  {{ session['paciente']['nombre'] }}</h1>
+    <h1 class="mt-5">Perfil de  {{ session['user']['nombre'] }}</h1>
     {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
     {% for category, message in messages %}
@@ -53,26 +53,26 @@
                 
                 <div class="form-group">
                     <label for="nombre">Nombre</label>
-                    <input type="text" class="form-control" id="nombre" name="nombre" value="{{ session['paciente']['nombre'] }}"
+                    <input type="text" class="form-control" id="nombre" name="nombre" value="{{ session['user']['nombre'] }}"
                         required>
                 </div>
                 
                 <div class="form-group">
                     <label for="apellidoPaterno">Apellido Paterno</label>
                     <input type="text" class="form-control" id="apellidoPaterno" name="apellidoPaterno"
-                        value="{{ session['paciente']['apellidoPaterno'] }}" required>
+                        value="{{ session['user']['apellidoPaterno'] }}" required>
                 </div>
                 
                 <div class="form-group">
                     <label for="apellidoMaterno">Apellido Materno</label>
                     <input type="text" class="form-control" id="apellidoMaterno" name="apellidoMaterno"
-                        value="{{ session['paciente']['apellidoMaterno'] }}" required>
+                        value="{{ session['user']['apellidoMaterno'] }}" required>
                 </div>
                 
                 <div class="form-group">
                     <label for="fechaNacimiento">Fecha de Nacimiento</label>
                     <input type="date" class="form-control" id="fechaNacimiento" name="fechaNacimiento"
-                        value="{{ session['paciente']['fechaNacimiento'] }}" required>
+                        value="{{ session['user']['fechaNacimiento'] }}" required>
                 </div>
                 
                 <div class="form-group">
@@ -86,7 +86,7 @@
                 <div class="form-group">
                     <label for="telefono">Teléfono</label>
                     <input type="text" class="form-control" id="telefono" name="telefono"
-                        value="{{ session['paciente']['telefono'] }}" required>
+                        value="{{ session['user']['telefono'] }}" required>
                 </div>
                 
                 <button type="submit" class="btn btn-primary mt-5">Actualizar</button>
