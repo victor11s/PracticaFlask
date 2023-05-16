@@ -292,6 +292,58 @@ def agendar():
 
 @app.route('/agendar_cita', methods=['POST'])
 def agendar_cita():
+
+    #recupero la informacion de la sesion
+    user_dict = session.get('user')
+    user = User(user_dict['idUsuario'], user_dict['tipoUsuario'], user_dict['correoElectronico'], user_dict['contraseña'])
+
+    paciente_dict = session.get('paciente')
+    paciente = Paciente(paciente_dict['idPaciente'], paciente_dict['nombre'], paciente_dict['apellidoPaterno'], paciente_dict['apellidoMaterno'], paciente_dict['fechaNacimiento'], paciente_dict['sexo'], paciente_dict['telefono'])
+
+    
+
+    # Recuperar los datos del formulario
+    if request.method == 'POST':
+
+        horaInicioForm=request.form['horaInicio']
+        if horaInicio == "":
+            flash("No se selecciono una hora de inicio")
+            return redirect(url_for('agendar'))
+        elif horaInicio == "1":
+            horaInicio = "13:00:00"
+            horaFin = "14:00:00"
+        elif horaInicio == "2":
+            horaInicio = "14:00:00"
+            horaFin = "15:00:00"
+        elif horaInicio == "3":
+            horaInicio = "15:00:00"
+            horaFin = "16:00:00"
+        elif horaInicio == "4":
+            horaInicio = "16:00:00"
+            horaFin = "17:00:00"
+        elif horaInicio == "5":
+            horaInicio = "17:00:00"
+            horaFin = "18:00:00"
+            
+        #recuperar el id del medico
+        id_doctor = int(request.form.get('doctor'))
+        print("soy el id del doctor",id_doctor)
+
+        Cita=ModelCita.agendarCita(db, horaInicio,horaFin,id_doctor)
+        if Cita:
+            flash("Cita agendada con exito")
+            return redirect(url_for('agendar'))
+        else:
+            flash("No se pudo agendar la cita")
+            return redirect(url_for('agendar'))
+        
+        # Cita= ModelCita.crearCita(db, request.form['fechaCita'], request.form['horaCita'], request.form['idPaciente'], request.form['idMedico'], request.form['idEspecialidad'])
+
+
+
+
+
+
     """ # Recuperar los datos del formulario
     exito = agendar_cita_funcion()  # Esta función debe retornar True si la cita fue agendada con éxito y False en caso contrario.
     
@@ -302,7 +354,7 @@ def agendar_cita():
     return redirect(url_for('ruta_donde_se_muestra_el_mensaje_flash'))
  """
 
-
+#con esta ruta recibo los datos del formulario de agendar, sobre todo el id de la especialidad que ocupo para obtener los doctores
 @app.route('/doctores/<int:id_especialidad>', methods=['GET'])
 def get_doctores(id_especialidad):
     data = ModelCita.obtenerDoctoresPorEspecialidad(db, id_especialidad)
