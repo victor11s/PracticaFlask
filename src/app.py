@@ -340,7 +340,7 @@ def agendar_cita():
             flash("Cita agendada con éxito", "success")
             return redirect(url_for('agendar'))
         else:
-            flash("No se pudo agendar la cita", "danger")
+            flash("No se pudo agendar la cita, selecciona otra fecha u horario", "danger")
             return redirect(url_for('agendar'))
 
         
