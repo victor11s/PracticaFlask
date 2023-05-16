@@ -69,11 +69,10 @@
           <label for="doctor">Elige un doctor</label>
           <select class="form-select" id="doctor" name="doctor">
             <option selected>Elige...</option>
-            <option value="1">Doctor 1</option>
-            <option value="2">Doctor 2</option>
-            <option value="3">Doctor 3</option>
+            <!-- Aquí se añadirán las opciones con JavaScript -->
           </select>
         </div>
+        
         <div class="form-group">
           <label for="horarios">Elige un horario</label>
           <select class="form-select" id="horarios" name="horario">
@@ -112,9 +111,12 @@
 </footer>
 
 
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-  integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous">
+</script>
+
+<script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
 <script src="../../assets/js/vendor/popper.min.js"></script>
 <script src="../../dist/js/bootstrap.min.js"></script>
 
@@ -127,6 +129,9 @@ $(document).ready(function() {
 
     // Realiza una solicitud GET a la ruta de doctores
     $.get('/doctores/' + idEspecialidad, function(data) {
+      // Imprime la respuesta en la consola
+      console.log(data);
+
       // Vacía el dropdown de doctores
       $('#doctor').empty();
 
@@ -137,6 +142,7 @@ $(document).ready(function() {
     });
   });
 });
+
 </script>
 
 

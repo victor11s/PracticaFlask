@@ -305,7 +305,15 @@ def agendar_cita():
 
 @app.route('/doctores/<int:id_especialidad>', methods=['GET'])
 def get_doctores(id_especialidad):
-    doctores = ModelMedico.obtenerDoctoresEspecialidad(db, id_especialidad)
+    data = ModelCita.obtenerDoctoresPorEspecialidad(db, id_especialidad)
+    doctores = []
+    for item in data:
+        doctor = {
+            'idUsuario': item[0],
+            'nombre': item[1],
+            'apellidoPaterno': item[2]
+        }
+        doctores.append(doctor)
     return jsonify(doctores)
 
 
