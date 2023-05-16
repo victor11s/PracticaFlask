@@ -395,6 +395,8 @@ def actualizar_perfil():
     user_dict = session.get('user')
     idUsuario = user_dict['idUsuario']
     
+    
+
     # Obtener los nuevos datos desde la solicitud HTTP
     nombreNuevo = request.form.get('nombre')
     apellidoPaternoNuevo = request.form.get('apellidoPaterno')
