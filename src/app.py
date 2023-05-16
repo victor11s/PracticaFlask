@@ -337,11 +337,12 @@ def agendar_cita():
         cita = CitaReservar(horaInicio, horaFin, idUsuarioMedico, id_paciente, request.form['fecha'])
         cita_agendada = ModelCita.crearCita(db, cita)
         if cita_agendada:
-            flash("Cita agendada con exito")
+            flash("Cita agendada con éxito", "success")
             return redirect(url_for('agendar'))
         else:
-            flash("No se pudo agendar la cita")
+            flash("No se pudo agendar la cita", "danger")
             return redirect(url_for('agendar'))
+
         
 
 
