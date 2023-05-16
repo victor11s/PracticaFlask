@@ -36,7 +36,7 @@
 </nav>
 
 <main role="main" class="container">
-    <h1 class="mt-5">Perfil de  {{ session['user']['nombre'] }}</h1>
+    <h1 class="mt-5">Perfil de  {{ paciente.nombre }}</h1>
     {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
     {% for category, message in messages %}
@@ -53,40 +53,40 @@
                 
                 <div class="form-group">
                     <label for="nombre">Nombre</label>
-                    <input type="text" class="form-control" id="nombre" name="nombre" value="{{ session['user']['nombre'] }}"
+                    <input type="text" class="form-control" id="nombre" name="nombre" value="{{ paciente.nombre }}"
                         required>
                 </div>
                 
                 <div class="form-group">
                     <label for="apellidoPaterno">Apellido Paterno</label>
                     <input type="text" class="form-control" id="apellidoPaterno" name="apellidoPaterno"
-                        value="{{ session['user']['apellidoPaterno'] }}" required>
+                        value="{{ paciente.apellidoPaterno}}" required>
                 </div>
                 
                 <div class="form-group">
                     <label for="apellidoMaterno">Apellido Materno</label>
                     <input type="text" class="form-control" id="apellidoMaterno" name="apellidoMaterno"
-                        value="{{ session['user']['apellidoMaterno'] }}" required>
+                        value="{{ paciente.apellidoMaterno}}" required>
                 </div>
                 
                 <div class="form-group">
                     <label for="fechaNacimiento">Fecha de Nacimiento</label>
                     <input type="date" class="form-control" id="fechaNacimiento" name="fechaNacimiento"
-                        value="{{ session['user']['fechaNacimiento'] }}" required>
+                        value="{{ paciente.fechaNacimiento}}" required>
                 </div>
                 
                 <div class="form-group">
                     <label for="sexo">Sexo</label>
                     <select class="form-select" id="sexo" name="sexo" required>
-                        <option value="M" {% if session['user']['sexo']=='M' %}selected{% endif %}>Masculino</option>
-                        <option value="F" {% if session['user']['sexo']=='F' %}selected{% endif %}>Femenino</option>
+                        <option value="M" {% if paciente.sexo=='M' %}selected{% endif %}>Masculino</option>
+                        <option value="F" {% if paciente.sexo=='F' %}selected{% endif %}>Femenino</option>
                     </select>
                 </div>
                 
                 <div class="form-group">
                     <label for="telefono">Teléfono</label>
                     <input type="text" class="form-control" id="telefono" name="telefono"
-                        value="{{ session['user']['telefono'] }}" required>
+                        value="{{ paciente.telefono }}" required>
                 </div>
                 
                 <button type="submit" class="btn btn-primary mt-5">Actualizar</button>
