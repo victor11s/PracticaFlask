@@ -378,6 +378,55 @@ def get_doctores(id_especialidad):
 
 #----Termina Agendar Citas------------------------------------------------------------------------------------------------------------------------------
 
+
+
+#----Mi Perdil Paciente------------------------------------------------------------------------------------------------------------------------------
+@app.route('/perfilPaciente')
+def perfilPaciente():
+    user_dict = session.get('user')
+    user = User(user_dict['idUsuario'], user_dict['tipoUsuario'], user_dict['correoElectronico'], user_dict['contraseña'])
+
+    paciente_dict = session.get('paciente')
+    paciente = Paciente(paciente_dict['idPaciente'], paciente_dict['nombre'], paciente_dict['apellidoPaterno'], paciente_dict['apellidoMaterno'], paciente_dict['fechaNacimiento'], paciente_dict['sexo'], paciente_dict['telefono'])
+    return render_template('perfilPaciente.html', user=user, paciente=paciente)
+
+@app.route('/actualizar_perfil', methods=['POST'])
+def actualizar_perfil():
+    user_dict = session.get('user')
+    idUsuario = user_dict['idUsuario']
+    
+    # Obtener los nuevos datos desde la solicitud HTTP
+    nombreNuevo = request.form.get('nombre')
+    apellidoPaternoNuevo = request.form.get('apellidoPaterno')
+    apellidoMaternoNuevo = request.form.get('apellidoMaterno')
+    fechaNacimientoNuevo = request.form.get('fechaNacimiento')
+    sexoNuevo = request.form.get('sexo')
+    telefonoNuevo = request.form.get('telefono')
+
+    if ModelPaciente.actualizarPerfil(db, idUsuario, nombreNuevo, apellidoPaternoNuevo, apellidoMaternoNuevo, fechaNacimientoNuevo, sexoNuevo, telefonoNuevo):
+        # Actualizar los datos en la sesión
+        user_dict['nombre'] = nombreNuevo
+        user_dict['apellidoPaterno'] = apellidoPaternoNuevo
+        user_dict['apellidoMaterno'] = apellidoMaternoNuevo
+        user_dict['fechaNacimiento'] = fechaNacimientoNuevo
+        user_dict['sexo'] = sexoNuevo
+        user_dict['telefono'] = telefonoNuevo
+        
+        # Guardar el objeto de sesión actualizado
+        session['user'] = user_dict
+        
+        flash('Perfil actualizado con éxito', 'success')
+    else:
+        flash('Hubo un error al actualizar el perfil', 'danger')
+
+    # Depuración: Imprimir el objeto de sesión actualizado
+    print(session['user'])
+
+    return redirect(url_for('perfilPaciente'))
+
+
+
+#----Termina Mi Perdil Paciente------------------------------------------------------------------------------------------------------------------------------
 @app.route('/logout')
 def logout():
     # Limpiar la sesión

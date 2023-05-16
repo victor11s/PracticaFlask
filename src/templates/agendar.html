@@ -27,7 +27,7 @@
         <a class="nav-link" href="{{ url_for('agendar') }}">Citas</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Mi Perfil</a>
+        <a class="nav-link" href="{{ url_for('perfilPaciente') }}">Mi Perfil</a>
       </li>
     </ul>
     <!-- Agrega boton de cerrar sesion al final de la navbar hasta el lado derecho -->
@@ -42,13 +42,13 @@
   <h1 class="mt-5">Agenda tu cita {{ paciente.nombre }}</h1>
   {% with messages = get_flashed_messages(with_categories=true) %}
   {% if messages %}
-    {% for category, message in messages %}
-      <div class="alert {% if category == 'success' %}alert-success{% else %}alert-danger{% endif %}">
-        {{ message }}
-      </div>
-    {% endfor %}
+  {% for category, message in messages %}
+  <div class="alert {% if category == 'success' %}alert-success{% else %}alert-danger{% endif %}">
+    {{ message }}
+  </div>
+  {% endfor %}
   {% endif %}
-{% endwith %}
+  {% endwith %}
 
 
   <div class="row mt-5">
@@ -74,7 +74,7 @@
             <!-- Aquí se añadirán las opciones con JavaScript -->
           </select>
         </div>
-        
+
         <div class="form-group">
           <label for="horarios">Elige un horario</label>
           <select class="form-select" id="horarios" name="horario">
@@ -89,7 +89,7 @@
         <div class="form-group">
           <label for="fecha">Elige una fecha</label>
           <input type="date" class="form-control" id="fecha" name="fecha">
-        <button type="submit" class="btn btn-primary mt-3">Reservar cita</button>
+          <button type="submit" class="btn btn-primary mt-3">Reservar cita</button>
       </form>
     </div>
   </div>
@@ -114,9 +114,8 @@
 
 
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"
-  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-  crossorigin="anonymous">
-</script>
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous">
+  </script>
 
 <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
 <script src="../../assets/js/vendor/popper.min.js"></script>
@@ -124,26 +123,26 @@
 
 <!--Para obtener los medicos de esa especialidad -->
 <script>
-$(document).ready(function() {
-  $('#especialidades').change(function() {
-    // Obtén el id de la especialidad seleccionada
-    var idEspecialidad = $(this).val();
+  $(document).ready(function () {
+    $('#especialidades').change(function () {
+      // Obtén el id de la especialidad seleccionada
+      var idEspecialidad = $(this).val();
 
-    // Realiza una solicitud GET a la ruta de doctores
-    $.get('/doctores/' + idEspecialidad, function(data) {
-      // Imprime la respuesta en la consola
-      console.log(data);
+      // Realiza una solicitud GET a la ruta de doctores
+      $.get('/doctores/' + idEspecialidad, function (data) {
+        // Imprime la respuesta en la consola
+        console.log(data);
 
-      // Vacía el dropdown de doctores
-      $('#doctor').empty();
+        // Vacía el dropdown de doctores
+        $('#doctor').empty();
 
-      // Añade cada doctor a la lista
-      $.each(data, function(index, doctor) {
-        $('#doctor').append('<option value="' + doctor.idUsuario + '">' + doctor.nombre + ' ' + doctor.apellidoPaterno + '</option>');
+        // Añade cada doctor a la lista
+        $.each(data, function (index, doctor) {
+          $('#doctor').append('<option value="' + doctor.idUsuario + '">' + doctor.nombre + ' ' + doctor.apellidoPaterno + '</option>');
+        });
       });
     });
   });
-});
 
 </script>
 

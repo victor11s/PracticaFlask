@@ -19,3 +19,4 @@ class PacienteRegistro():
         self.fechaNacimiento = fechaNacimiento
         self.sexo = sexo
         self.telefono = telefono
+
