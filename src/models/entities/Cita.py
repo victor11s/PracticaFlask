@@ -7,10 +7,11 @@ class Cita():
         self.horaFin = horaFin
 
 
-class CitaReserva():
-    def __init__(self, idCita, idUsuarioPaciente, idUsuarioMedico):
-        self.idCita = idCita
-        self.idUsuarioPaciente = idUsuarioPaciente
+class CitaReservar():
+    def __init__(self, horaInicio, horaFin, idUsuarioMedico, idUsuarioPaciente, fechaCita):
+        self.horaInicio = horaInicio
+        self.horaFin = horaFin
         self.idUsuarioMedico = idUsuarioMedico
-
+        self.idUsuarioPaciente = idUsuarioPaciente
+        self.fechaCita = fechaCita
 

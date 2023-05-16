@@ -24,6 +24,7 @@ from models.entities.Paciente import PacienteRegistro
 from models.entities.Medico import Medico
 from models.entities.Administrador import Administrador
 from models.entities.Cita import Cita
+from models.entities.Cita import CitaReservar
 
 
 app = Flask(__name__)
@@ -299,45 +300,49 @@ def agendar_cita():
 
     paciente_dict = session.get('paciente')
     paciente = Paciente(paciente_dict['idPaciente'], paciente_dict['nombre'], paciente_dict['apellidoPaterno'], paciente_dict['apellidoMaterno'], paciente_dict['fechaNacimiento'], paciente_dict['sexo'], paciente_dict['telefono'])
-
+    id_paciente = paciente_dict['idPaciente']
+    print("soy el id del paciente",id_paciente)
     
 
     # Recuperar los datos del formulario
     if request.method == 'POST':
 
-        horaInicioForm=request.form['horaInicio']
-        if horaInicio == "":
+        horaInicioForm=request.form['horario']
+        if horaInicioForm == "":
             flash("No se selecciono una hora de inicio")
             return redirect(url_for('agendar'))
-        elif horaInicio == "1":
+        elif horaInicioForm == "1":
             horaInicio = "13:00:00"
             horaFin = "14:00:00"
-        elif horaInicio == "2":
+        elif horaInicioForm == "2":
             horaInicio = "14:00:00"
             horaFin = "15:00:00"
-        elif horaInicio == "3":
+        elif horaInicioForm == "3":
             horaInicio = "15:00:00"
             horaFin = "16:00:00"
-        elif horaInicio == "4":
+        elif horaInicioForm == "4":
             horaInicio = "16:00:00"
             horaFin = "17:00:00"
-        elif horaInicio == "5":
+        elif horaInicioForm == "5":
             horaInicio = "17:00:00"
             horaFin = "18:00:00"
             
         #recuperar el id del medico
-        id_doctor = int(request.form.get('doctor'))
-        print("soy el id del doctor",id_doctor)
+        idUsuarioMedico = int(request.form.get('doctor'))
+        print("soy el id del doctor",idUsuarioMedico)
 
-        Cita=ModelCita.agendarCita(db, horaInicio,horaFin,id_doctor)
-        if Cita:
+        
+
+
+        cita = CitaReservar(horaInicio, horaFin, idUsuarioMedico, id_paciente, request.form['fecha'])
+        cita_agendada = ModelCita.crearCita(db, cita)
+        if cita_agendada:
             flash("Cita agendada con exito")
             return redirect(url_for('agendar'))
         else:
             flash("No se pudo agendar la cita")
             return redirect(url_for('agendar'))
         
-        # Cita= ModelCita.crearCita(db, request.form['fechaCita'], request.form['horaCita'], request.form['idPaciente'], request.form['idMedico'], request.form['idEspecialidad'])
 
 
 
