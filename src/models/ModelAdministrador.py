@@ -12,3 +12,26 @@ class ModelAdministrador():
             return row
         except Exception as ex:
             raise Exception(ex)
+        
+    
+    @classmethod
+    def obtener_todos_medicos(self,db):
+        try:
+            cursor = db.connection.cursor()
+            sql=""" CALL obtener_todos_medicos() """
+            cursor.execute(sql)
+            row=cursor.fetchall()
+            return row
+        except Exception as ex:
+            raise Exception(ex)
+        
+    @classmethod
+    def obtener_todos_pacientes(self,db):
+        try:
+            cursor = db.connection.cursor()
+            sql=""" CALL obtener_todos_pacientes() """
+            cursor.execute(sql)
+            row=cursor.fetchall()
+            return row
+        except Exception as ex:
+            raise Exception(ex)

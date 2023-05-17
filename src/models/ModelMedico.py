@@ -24,5 +24,18 @@ class ModelMedico():
         except Exception as ex:
             raise Exception(ex)
         
+    @classmethod
+    def actualizarPerfil(cls, db, idUsuario, nombreNuevo, apellidoPaternoNuevo, apellidoMaternoNuevo, fechaNacimientoNuevo, sexoNuevo, telefonoNuevo):
+        try:
+            cursor = db.connection.cursor()
+            sql = "CALL actualizar_perfil_medico(%s, %s, %s, %s, %s, %s, %s)"
+            cursor.execute(sql, (idUsuario, nombreNuevo, apellidoPaternoNuevo, apellidoMaternoNuevo, fechaNacimientoNuevo, sexoNuevo, telefonoNuevo))
+            db.connection.commit()
+            print("Perfil del paciente actualizado")
+            return True
+        except Exception as ex:
+            print("No se pudo actualizar el perfil del paciente")
+            print(ex)
+            return False
 
 

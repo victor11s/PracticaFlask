@@ -119,10 +119,29 @@ def login():
                 #TODOS ESTOS SON PARA  DOCTOR----------------------------------------------------------------------------------------------------------------------------
                 datosMedico= ModelMedico.obtener_info_Medico_por_id(db, logged_user.idUsuario)
 
+                # datosMedicos= ModelMedico.obtener_info_Medicos(db)
+                # medicos=[]
+                # for medico in datosMedicos:
+                #     medico_obj = Medico(medico[0], medico[1], medico[2], medico[3], medico[4], medico[5], medico[6])
+                #     medicos.append(medico_obj)
+                # print(medicos)
+
+
+                # datosPaciente= ModelPaciente.obtener_info_Pacientes(db)
+                # pacientes=[]
+                # for paciente in datosPaciente:
+                #     paciente_obj = Paciente(paciente[0], paciente[1], paciente[2], paciente[3], paciente[4], paciente[5], paciente[6], paciente[7])
+                #     pacientes.append(paciente_obj)
+                # print(pacientes)
+
+
                 #TERMINA DOCTOR----------------------------------------------------------------------------------------------------------------------------
 
                 #TODOS ESTOS SON PARA  ADMINISTRADOR----------------------------------------------------------------------------------------------------------------------------
                 datosAdmin= ModelAdministrador.obtener_info_Administrador_por_id(db, logged_user.idUsuario)
+
+
+
                 #TERMINA ADMINISTRADOR----------------------------------------------------------------------------------------------------------------------------
 
 
@@ -210,7 +229,7 @@ def login():
 
 
 
-                    return redirect(url_for('homeAdmi'))
+                    return redirect(url_for('homeAdmi' ))
                 else:
                     flash("No se encontro el tipo de usuario")
             else:   
@@ -265,7 +284,20 @@ def homeAdmi():
 
     admin_dict = session.get('admin')
     admin = Administrador(admin_dict['idAdmin'], admin_dict['nombre'], admin_dict['apellidoPaterno'], admin_dict['apellidoMaterno'], admin_dict['fechaNacimiento'], admin_dict['sexo'], admin_dict['telefono'])
-    return render_template('homeAdmi.html', user=user, admin=admin)
+    
+    datosMedicos = ModelAdministrador.obtener_todos_medicos(db)
+    medicos = []
+    for medico in datosMedicos:
+        medico_obj = Medico(medico[0], medico[1], medico[2], medico[3], medico[4], medico[5], medico[6])
+        medicos.append(medico_obj)
+
+    datosPaciente = ModelAdministrador.obtener_todos_pacientes(db)
+    pacientes = []
+    for paciente in datosPaciente:
+        paciente_obj = Paciente(paciente[0], paciente[1], paciente[2], paciente[3], paciente[4], paciente[5], paciente[6])
+        pacientes.append(paciente_obj)
+
+    return render_template('homeAdmi.html', user=user, admin=admin,medicos=medicos, pacientes=pacientes)
 
 #----Agendar Citas------------------------------------------------------------------------------------------------------------------------------
 @app.route('/agendar')
@@ -380,7 +412,7 @@ def get_doctores(id_especialidad):
 
 
 
-#----Mi Perdil Paciente------------------------------------------------------------------------------------------------------------------------------
+#----Mi Perfil Paciente------------------------------------------------------------------------------------------------------------------------------
 @app.route('/perfilPaciente')
 def perfilPaciente():
     user_dict = session.get('user')
@@ -427,6 +459,80 @@ def actualizar_perfil():
 
 
 #----Termina Mi Perdil Paciente------------------------------------------------------------------------------------------------------------------------------
+
+#----Mi Perdil Doctor------------------------------------------------------------------------------------------------------------------------------
+@app.route('/perfilDoctor')
+def perfilDoctor():
+    user_dict = session.get('user')
+    user = User(user_dict['idUsuario'], user_dict['tipoUsuario'], user_dict['correoElectronico'], user_dict['contraseña'])
+
+    medico_dict = session.get('medico')
+    medico = Medico(medico_dict['idMedico'], medico_dict['nombre'], medico_dict['apellidoPaterno'], medico_dict['apellidoMaterno'], medico_dict['fechaNacimiento'], medico_dict['sexo'], medico_dict['telefono'])
+    return render_template('perfilMedico.html', user=user, medico=medico)
+
+@app.route('/actualizar_perfilDoctor', methods=['POST'])
+def actualizar_perfilDoctor():
+    user_dict = session.get('user')
+    idUsuario = user_dict['idUsuario']
+    
+    # Obtener los nuevos datos desde la solicitud HTTP
+    nombreNuevo = request.form.get('nombre')
+    apellidoPaternoNuevo = request.form.get('apellidoPaterno')
+    apellidoMaternoNuevo = request.form.get('apellidoMaterno')
+    fechaNacimientoNuevo = request.form.get('fechaNacimiento')
+    sexoNuevo = request.form.get('sexo')
+    telefonoNuevo = request.form.get('telefono')
+
+    if ModelMedico.actualizarPerfil(db, idUsuario, nombreNuevo, apellidoPaternoNuevo, apellidoMaternoNuevo, fechaNacimientoNuevo, sexoNuevo, telefonoNuevo):
+        # Actualizar los datos en la sesión
+        user_dict['nombre'] = nombreNuevo
+        user_dict['apellidoPaterno'] = apellidoPaternoNuevo
+        user_dict['apellidoMaterno'] = apellidoMaternoNuevo
+        user_dict['fechaNacimiento'] = fechaNacimientoNuevo
+        user_dict['sexo'] = sexoNuevo
+        user_dict['telefono'] = telefonoNuevo
+        
+        # Guardar el objeto de sesión actualizado
+        session['user'] = user_dict
+        
+        flash('Perfil actualizado con éxito', 'success')
+    else:
+        flash('Hubo un error al actualizar el perfil', 'danger')
+
+    # Depuración: Imprimir el objeto de sesión actualizado
+    print(session['user'])
+
+    return redirect(url_for('perfilDoctor'))
+
+
+@app.route('/ruta-para-editar-paciente', methods=['POST'])
+def editar_paciente():
+    id_paciente = request.form['idPaciente']
+    paciente = db.session.query(Paciente).get(id_paciente)
+    if paciente:
+        # Aquí puedes procesar la edición del paciente
+        # Después de la edición, puedes redirigir al usuario a la página que desees
+        return redirect('/ruta-de-la-pagina-deseada')
+    else:
+        # Manejar el caso en que el paciente no se encuentra
+        return "Paciente no encontrado", 404
+
+@app.route('/ruta-para-editar-medico', methods=['POST'])
+def editar_medico():
+    id_medico = request.form['idMedico']
+    medico = db.session.query(Medico).get(id_medico)
+    if medico:
+        # Aquí puedes procesar la edición del médico
+        # Después de la edición, puedes redirigir al usuario a la página que desees
+        return redirect('/ruta-de-la-pagina-deseada')
+    else:
+        # Manejar el caso en que el médico no se encuentra
+        return "Medico no encontrado", 404
+
+#----Termina Mi Perdil Doctor------------------------------------------------------------------------------------------------------------------------------
+
+
+
 @app.route('/logout')
 def logout():
     # Limpiar la sesión
