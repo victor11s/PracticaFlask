@@ -1,0 +1,115 @@
+{% extends './base.html' %}
+
+{% block title %} Home {{ user.correoElectronico }} {% endblock %}
+
+{% block customCSS %}
+<link rel="stylesheet" href="{{url_for('static', filename = 'css/sticky-footer-navbar.css')}}">
+{% endblock %}
+
+{% block body %}
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-info navbar-expand-sm">
+    <!-- Agrega un logo -->
+    <img src="{{url_for('static', filename= 'img/prueba.png')}}" alt="" width="72" height="57"
+        style="margin-left: 10px;">
+    <a class="navbar-brand" style="margin-left: 15px;" href="{{ url_for('homeAdmi') }}">MediAPP</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+        aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end align-items-center" id="navbarCollapse">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="{{ url_for('home') }}">Dashboard</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('agendar') }}">Citas</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('perfilPaciente') }}">Mi Perfil</a>
+            </li>
+        </ul>
+        <!-- Agrega boton de cerrar sesion al final de la navbar hasta el lado derecho -->
+        <div class="d-flex">
+            <a class="btn btn-danger" href="/logout" style="margin-left:10px; margin-right:10px">Cerrar Sesión</a>
+        </div>
+    </div>
+</nav>
+
+<main role="main" class="container">
+    <h1 class="mt-5">Perfil de {{ paciente.nombre }}</h1>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    {% for category, message in messages %}
+    <div class="alert {% if category == 'success' %}alert-success{% else %}alert-danger{% endif %}">
+        {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+    <div class="row mt-5">
+        <div class="col-12">
+            <form action="{{ url_for('actualizar_perfil') }}" method="post">
+
+                <div class="form-group">
+                    <label for="nombre">Nombre</label>
+                    <input type="text" class="form-control" id="nombre" name="nombre" value="{{ paciente.nombre }}"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label for="apellidoPaterno">Apellido Paterno</label>
+                    <input type="text" class="form-control" id="apellidoPaterno" name="apellidoPaterno"
+                        value="{{ paciente.apellidoPaterno}}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="apellidoMaterno">Apellido Materno</label>
+                    <input type="text" class="form-control" id="apellidoMaterno" name="apellidoMaterno"
+                        value="{{ paciente.apellidoMaterno}}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="fechaNacimiento">Fecha de Nacimiento</label>
+                    <input type="date" class="form-control" id="fechaNacimiento" name="fechaNacimiento"
+                        value="{{ paciente.fechaNacimiento}}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="sexo">Sexo</label>
+                    <select class="form-select" id="sexo" name="sexo" required>
+                        <option value="M" {% if paciente.sexo=='M' %}selected{% endif %}>Masculino</option>
+                        <option value="F" {% if paciente.sexo=='F' %}selected{% endif %}>Femenino</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="telefono">Teléfono</label>
+                    <input type="text" class="form-control" id="telefono" name="telefono"
+                        value="{{ paciente.telefono }}" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary mt-5">Actualizar</button>
+            </form>
+
+        </div>
+    </div>
+
+</main>
+
+    <!--Aqui termina el contenido-->
+
+
+    <footer class="footer">
+        <div class="container">
+            <span class="text-muted">MediAPP derechos reservados</span>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"
+        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous">
+        </script>
+    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+    <script src="../../assets/js/vendor/popper.min.js"></script>
+    <script src="../../dist/js/bootstrap.min.js"></script>
+    {% endblock %}

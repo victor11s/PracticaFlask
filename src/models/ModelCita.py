@@ -8,7 +8,7 @@ class ModelCita():
             cursor = db.connection.cursor()
 
             # Primero insertamos en la tabla CitasReservadas
-            sql_citas_reservadas = """INSERT INTO citasreservadas (idUsuarioPaciente, idUsuarioMedico)
+            sql_citas_reservadas = """INSERT INTO citasReservadas (idUsuarioPaciente, idUsuarioMedico)
                                     VALUES ('{}', '{}')""".format(cita.idUsuarioPaciente, cita.idUsuarioMedico)
             cursor.execute(sql_citas_reservadas)
             db.connection.commit()
@@ -17,7 +17,7 @@ class ModelCita():
             id_cita = cursor.lastrowid
 
             # Verificamos si hay alguna cita existente con la misma fecha, horario y médico
-            sql_verificar_citas = """SELECT COUNT(*) FROM citainformacion
+            sql_verificar_citas = """SELECT COUNT(*) FROM citaInformacion
                                     WHERE fechacita = '{}' AND 
                                     (horaInicio <= '{}' AND horaFin >= '{}')""".format(
                 cita.fechaCita, cita.horaFin, cita.horaInicio)
@@ -29,7 +29,7 @@ class ModelCita():
                 return False
 
             # Insertamos en la tabla CitaInformacion
-            sql_cita_informacion = """INSERT INTO citainformacion (idCita, fechacita, horaInicio, horaFin)
+            sql_cita_informacion = """INSERT INTO citaInformacion (idCita, fechacita, horaInicio, horaFin)
                                     VALUES ('{}', '{}', '{}', '{}')""".format(
                 id_cita, cita.fechaCita, cita.horaInicio, cita.horaFin)
             cursor.execute(sql_cita_informacion)
