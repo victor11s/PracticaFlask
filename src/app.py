@@ -512,7 +512,7 @@ def editar_paciente():
     if paciente:
         # Aquí puedes procesar la edición del paciente
         # Después de la edición, puedes redirigir al usuario a la página que desees
-        return redirect('/ruta-de-la-pagina-deseada')
+        return redirect(url_for('homeAdmi'))
     else:
         # Manejar el caso en que el paciente no se encuentra
         return "Paciente no encontrado", 404
@@ -524,7 +524,7 @@ def editar_medico():
     if medico:
         # Aquí puedes procesar la edición del médico
         # Después de la edición, puedes redirigir al usuario a la página que desees
-        return redirect('/ruta-de-la-pagina-deseada')
+        return redirect(url_for('homeAdmi'))
     else:
         # Manejar el caso en que el médico no se encuentra
         return "Medico no encontrado", 404
