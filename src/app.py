@@ -522,6 +522,7 @@ def editar_medico():
     id_medico = request.form['idMedico']
     medico = db.session.query(Medico).get(id_medico)
     if medico:
+        
         # Aquí puedes procesar la edición del médico
         # Después de la edición, puedes redirigir al usuario a la página que desees
         return redirect(url_for('homeAdmi'))
