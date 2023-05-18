@@ -288,6 +288,25 @@ def homeDoctor():
 
     medico_dict = session.get('medico')
     medico = Medico(medico_dict['idMedico'], medico_dict['nombre'], medico_dict['apellidoPaterno'], medico_dict['apellidoMaterno'], medico_dict['fechaNacimiento'], medico_dict['sexo'], medico_dict['telefono'])
+
+    citas = ModelCita.obtenerCitasPorDoctor(db, medico.idMedico)
+    citas_dict = [
+    {
+        'idCita': cita.idCita, 
+        'fechaCita': cita.fechaCita, 
+        'horaCita': cita.horaCita, 
+        'idPaciente': cita.idPaciente, 
+        'idMedico': cita.idMedico,
+        'nombrePaciente': cita.nombrePaciente,
+        'apellidoPaciente': cita.apellidoPaterno,
+        'correo': cita.correo
+    } 
+    for cita in citas
+    ]
+    session['citas'] = citas_dict
+
+
+
     
     return render_template('homeDoctor.html', user=user, medico=medico)
 

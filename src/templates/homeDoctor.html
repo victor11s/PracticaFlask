@@ -28,7 +28,7 @@
       </li>
       <li class="nav-item">
         <a class="nav-link" href="{{ url_for('perfilDoctor') }}">Mi Perfil</a>
-    </li>
+      </li>
     </ul>
     <!-- Agrega boton de cerrar sesion al final de la navbar hasta el lado derecho -->
     <div class="d-flex">
@@ -44,65 +44,68 @@
 
   <div class="container mt-5">
     <h2 class="mb-3 mt-2">Citas</h2>
-    {% if citas %}
-      <div class="row">
-        {% for cita in citas %}
-          <div class="col-lg-4">
-            <div class="card mt-3">
-              <div class="card-body">
-                <h5 class="card-title">{{ cita.fecha }}</h5>
-                <p class="card-text">
-                  Paciente: {{ cita.paciente }}<br>
-                  Hora inicio: {{ cita.hora_inicio }}<br>
-                  Hora fin: {{ cita.hora_fin }}
-                </p>
-                <!-- Botón que lanza el modal -->
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal{{ cita.id }}">
-                  Agregar detalles del examen
-                </button>
-  
-                <!-- Modal -->
-                <div class="modal fade" id="modal{{ cita.id }}" tabindex="-1" aria-labelledby="modalLabel{{ cita.id }}" aria-hidden="true">
-                  <div class="modal-dialog">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h5 class="modal-title" id="modalLabel{{ cita.id }}">Detalles del examen</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    {% if session['citas'] %}
+    <div class="row">
+      {% for cita in session['citas'] %}
+      <div class="col-lg-4">
+        <div class="card mt-3">
+          <div class="card-body">
+            <h5 class="card-title">{{ cita.fechaCita }}</h5>
+            <p class="card-text">
+              Paciente: {{ cita.nombrePaciente }} {{ cita.apellidoPaterno }}<br>
+              Correo: {{ cita.correo }}<br>
+              Hora inicio: {{ cita.horaInicio }}<br>
+              Hora fin: {{ cita.horaFin }}
+            </p>
+            <!-- Botón que lanza el modal -->
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+              data-bs-target="#modal{{ cita.idCita }}">
+              Agregar detalles del examen
+            </button>
+
+            <!-- Modal -->
+            <div class="modal fade" id="modal{{ cita.idCita }}" tabindex="-1"
+              aria-labelledby="modalLabel{{ cita.idCita }}" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabel{{ cita.idCita }}">Detalles del examen</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <form>
+                      <div class="mb-3">
+                        <label for="tipoExamen" class="form-label">Tipo de examen</label>
+                        <input type="text" class="form-control" id="tipoExamen">
                       </div>
-                      <div class="modal-body">
-                        <form>
-                          <div class="mb-3">
-                            <label for="tipoExamen" class="form-label">Tipo de examen</label>
-                            <input type="text" class="form-control" id="tipoExamen">
-                          </div>
-                          <div class="mb-3">
-                            <label for="resultado" class="form-label">Resultado</label>
-                            <input type="text" class="form-control" id="resultado">
-                          </div>
-                          <div class="mb-3">
-                            <label for="fechaExamen" class="form-label">Fecha</label>
-                            <input type="date" class="form-control" id="fechaExamen" value="{{ current_date }}">
-                          </div>
-                          <button type="submit" class="btn btn-primary">Guardar</button>
-                        </form>
+                      <div class="mb-3">
+                        <label for="resultado" class="form-label">Resultado</label>
+                        <input type="text" class="form-control" id="resultado">
                       </div>
-                    </div>
+                      <div class="mb-3">
+                        <label for="fechaExamen" class="form-label">Fecha</label>
+                        <input type="date" class="form-control" id="fechaExamen" value="{{ current_date }}">
+                      </div>
+                      <button type="submit" class="btn btn-primary">Guardar</button>
+                    </form>
                   </div>
                 </div>
-                <!-- Fin del modal -->
               </div>
             </div>
+            <!-- Fin del modal -->
           </div>
-        {% endfor %}
+        </div>
       </div>
+      {% endfor %}
+    </div>
     {% endif %}
   </div>
-  
 
 
 
 
-  
+
+
 
 </main>
 
@@ -133,14 +136,14 @@
 
 <script>
 
-$(document).ready(function(){
-  $('.modal').on('show.bs.modal', function (event) {
-    var button = $(event.relatedTarget) // Botón que activó el modal
-    var recipient = button.data('whatever') // Extrae información de los atributos data-*
-    var modal = $(this)
-    modal.find('.modal-body input').val(recipient)
+  $(document).ready(function () {
+    $('.modal').on('show.bs.modal', function (event) {
+      var button = $(event.relatedTarget) // Botón que activó el modal
+      var recipient = button.data('whatever') // Extrae información de los atributos data-*
+      var modal = $(this)
+      modal.find('.modal-body input').val(recipient)
+    });
   });
-});
 
 </script>
 
