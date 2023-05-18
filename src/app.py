@@ -543,4 +543,4 @@ def logout():
 if __name__ == '__main__':
     #esto me sirve para cargar la configuracion de desarrollo
     app.config.from_object(config['development'])
-    app.run(debug=True)
+    app.run(debug=False)
