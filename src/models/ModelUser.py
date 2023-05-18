@@ -22,19 +22,35 @@ class ModelUser():
             raise Exception(ex)
         
     @classmethod
-    def register(self,db,user):
+    def register(self,db,user,userRegistro):
         #haz el mismo metodo de arriba, pero sin pedir el tipo de usuario, ademas pide el nombre, apellido paterno y materno, sexo, telefono y su correo y contraseña, usando el modelo de UserRegistro
+        cursor = db.connection.cursor()
+
+        cursor = db.connection.cursor()
+
         try:
-            cursor = db.connection.cursor()
-            sql = """INSERT INTO usuarios (tipoUsuario, correoElectronico, contraseña) 
-            VALUES ('{}','{}','{}')""".format(user.tipoUsuario,user.correoElectronico,user.contraseña)
-            cursor.execute(sql)
+            # Insertamos en la tabla infoUsuarios
+            sql_info_usuarios = """INSERT INTO infoUsuarios (nombre, apellidoPaterno, apellidoMaterno, fechaNacimiento, sexo, telefono)
+                                VALUES ('{}', '{}', '{}', '{}', '{}', '{}')""".format(
+                userRegistro.nombre, userRegistro.apellidoPaterno, userRegistro.apellidoMaterno, userRegistro.fechaNacimiento, userRegistro.sexo, userRegistro.telefono)
+            cursor.execute(sql_info_usuarios)
             db.connection.commit()
-            print("Usuario registrado")
-            return True
-        except Exception as ex:
-            print("No se pudo registrar")
-            raise Exception(ex)
+
+            # Obtenemos el idUsuario autoincrementado generado en la tabla infoUsuarios
+            idUsuario = cursor.lastrowid
+
+            # Insertamos en la tabla Usuarios
+            sql_usuarios = """INSERT INTO Usuarios (idUsuario, tipoUsuario, correoElectronico, contraseña)
+                            VALUES ('{}', '{}', '{}', '{}')""".format(
+                user.idUsuario, user.tipoUsuario, user.correoElectronico, user.contraseña)
+            cursor.execute(sql_usuarios)
+            db.connection.commit()
+        except Exception as e:
+            db.connection.rollback()  # Deshacer cambios en caso de error
+            print("Error: ", str(e))
+        finally:
+            cursor.close()
+
         
     @classmethod
     def get_by_id(cls, db, numPaciente):
