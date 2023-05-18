@@ -29,10 +29,10 @@ from models.entities.Cita import CitaReservar
 
 app = Flask(__name__)
 
-db=MySQL(app)
+""" db=MySQL(app) """
 
 
-@app.route('/', methods=['GET', 'POST', 'PUT'])
+@app.route('/')
 def index():
     #cuando se hace una entrada normal, te lleva a la pagina principal
     return ("Hola mundo")
