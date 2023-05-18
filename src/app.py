@@ -35,7 +35,7 @@ db=MySQL(app)
 @app.route('/', methods=['GET'])
 def index():
     #cuando se hace una entrada normal, te lleva a la pagina principal
-    return redirect(url_for('login'))
+    return ("Hola mundo")
 
 # @app.route('/registro', methods=['GET', 'POST'])
 # def registro():
