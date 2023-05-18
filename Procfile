@@ -1,1 +1,1 @@
-web: sh activate.sh && gunicorn src.app:app
+web: gunicorn src.app:app
