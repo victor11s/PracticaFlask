@@ -25,8 +25,10 @@ from models.entities.Administrador import Administrador
 from models.entities.Cita import Cita
 from models.entities.Cita import CitaReservar
 
+app_config = os.environ.get('APP_CONFIG')
 
 app = Flask(__name__)
+app.config.from_object(app_config)
 
 db=MySQL(app)
 
