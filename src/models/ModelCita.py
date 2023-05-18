@@ -67,7 +67,7 @@ class ModelCita():
     def obtenerCitasPorDoctor(self, db, idDoctor):
         try:
             cursor = db.connection.cursor()
-            sql = """ CALL obtener_citas_por_doctor({}) """.format(idDoctor)
+            sql = """ CALL obtenerCitasPorDoctor({}) """.format(idDoctor)
             cursor.execute(sql)
             rows = cursor.fetchall()
             return rows

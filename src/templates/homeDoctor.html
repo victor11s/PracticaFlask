@@ -24,7 +24,7 @@
         <a class="nav-link" href="{{ url_for('homeDoctor') }}">Dashboard</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Citas2</a>
+        <a class="nav-link" href="#">Citas</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="{{ url_for('perfilDoctor') }}">Mi Perfil</a>
@@ -39,60 +39,74 @@
 
 
 <main role="main" class="container">
-  <h1 class="mt-5">Bienvenido/a {{ medico.nombre }}</h1>
+  <h1 class="mt-5">Administra tus citas {{ medico.nombre }}</h1>
 
 
   <div class="container mt-5">
     <h2 class="mb-3 mt-2">Citas</h2>
-    {% if session['citas'] %}
+    {% if citas %}
     <div class="row">
-      {% for cita in session['citas'] %}
+      {% for cita in citas %}
       <div class="col-lg-4">
         <div class="card mt-3">
           <div class="card-body">
             <h5 class="card-title">{{ cita.fechaCita }}</h5>
             <p class="card-text">
-              Paciente: {{ cita.nombrePaciente }} {{ cita.apellidoPaterno }}<br>
+              Paciente: {{ cita.NombrePaciente }} {{ cita.ApellidoPaterno }}<br>
               Correo: {{ cita.correo }}<br>
               Hora inicio: {{ cita.horaInicio }}<br>
               Hora fin: {{ cita.horaFin }}
             </p>
-            <!-- Botón que lanza el modal -->
+            <!-- Botones que lanzan los modales -->
             <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-              data-bs-target="#modal{{ cita.idCita }}">
-              Agregar detalles del examen
+              data-bs-target="#modalExamen{{ cita.idCita }}" data-idcita="{{ cita.idCita }}"
+              data-idpaciente="{{ cita.idPaciente }}">
+              Agregar Resultados
             </button>
-
-            <!-- Modal -->
-            <div class="modal fade" id="modal{{ cita.idCita }}" tabindex="-1"
-              aria-labelledby="modalLabel{{ cita.idCita }}" aria-hidden="true">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="modalLabel{{ cita.idCita }}">Detalles del examen</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div>
-                  <div class="modal-body">
-                    <form>
-                      <div class="mb-3">
-                        <label for="tipoExamen" class="form-label">Tipo de examen</label>
-                        <input type="text" class="form-control" id="tipoExamen">
-                      </div>
-                      <div class="mb-3">
-                        <label for="resultado" class="form-label">Resultado</label>
-                        <input type="text" class="form-control" id="resultado">
-                      </div>
-                      <div class="mb-3">
-                        <label for="fechaExamen" class="form-label">Fecha</label>
-                        <input type="date" class="form-control" id="fechaExamen" value="{{ current_date }}">
-                      </div>
-                      <button type="submit" class="btn btn-primary">Guardar</button>
-                    </form>
-                  </div>
-                </div>
-              </div>
+            <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
+              data-bs-target="#modalHistorial{{ cita.idCita }}" data-idcita="{{ cita.idCita }}"
+              data-idpaciente="{{ cita.idPaciente }}">
+              Agregar Historial
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- Modales -->
+      <!-- Modal de examen -->
+      <div class="modal fade" id="modalExamen{{ cita.idCita }}" tabindex="-1"
+        aria-labelledby="modalLabelExamen{{ cita.idCita }}" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="modalLabelExamen{{ cita.idCita }}">Detalles del examen</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <!-- Fin del modal -->
+            <div class="modal-body">
+              <form>
+                <input type="hidden" id="idCitaExamen" value="{{ cita.idCita }}">
+                <input type="hidden" id="idPacienteExamen" value="{{ cita.idPaciente }}">
+                <!-- Aquí irá el contenido del formulario -->
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Modal de historial -->
+      <div class="modal fade" id="modalHistorial{{ cita.idCita }}" tabindex="-1"
+        aria-labelledby="modalLabelHistorial{{ cita.idCita }}" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="modalLabelHistorial{{ cita.idCita }}">Agregar Historial</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form>
+                <input type="hidden" id="idCitaHistorial" value="{{ cita.idCita }}">
+                <input type="hidden" id="idPacienteHistorial" value="{{ cita.idPaciente }}">
+                <!-- Aquí irá el contenido del formulario -->
+              </form>
+            </div>
           </div>
         </div>
       </div>
@@ -100,6 +114,7 @@
     </div>
     {% endif %}
   </div>
+
 
 
 
@@ -139,11 +154,16 @@
   $(document).ready(function () {
     $('.modal').on('show.bs.modal', function (event) {
       var button = $(event.relatedTarget) // Botón que activó el modal
-      var recipient = button.data('whatever') // Extrae información de los atributos data-*
-      var modal = $(this)
-      modal.find('.modal-body input').val(recipient)
+      var idCita = button.data('idcita'); // Extrae el id de la cita de los atributos data-*
+      var idPaciente = button.data('idpaciente'); // Extrae el id del paciente de los atributos data-*
+      var modal = $(this);
+      modal.find('.modal-body #idCitaExamen').val(idCita);
+      modal.find('.modal-body #idPacienteExamen').val(idPaciente);
+      modal.find('.modal-body #idCitaHistorial').val(idCita);
+      modal.find('.modal-body #idPacienteHistorial').val(idPaciente);
     });
   });
+
 
 </script>
 

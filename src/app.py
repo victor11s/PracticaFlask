@@ -14,6 +14,7 @@ from models.ModelCita import ModelCita
 
 
 
+
 #entities
 from models.entities.User import User
 from models.entities.User import UserRegistro
@@ -25,6 +26,7 @@ from models.entities.Medico import Medico
 from models.entities.Administrador import Administrador
 from models.entities.Cita import Cita
 from models.entities.Cita import CitaReservar
+from models.entities.Cita import CitaMedico
 
 
 class Config:
@@ -289,28 +291,15 @@ def homeDoctor():
     medico_dict = session.get('medico')
     medico = Medico(medico_dict['idMedico'], medico_dict['nombre'], medico_dict['apellidoPaterno'], medico_dict['apellidoMaterno'], medico_dict['fechaNacimiento'], medico_dict['sexo'], medico_dict['telefono'])
 
-    citas = ModelCita.obtenerCitasPorDoctor(db, medico.idMedico)
-    citas_dict = [
-    {
-        'idCita': cita.idCita, 
-        'fechaCita': cita.fechaCita, 
-        'horaCita': cita.horaCita, 
-        'idPaciente': cita.idPaciente, 
-        'idMedico': cita.idMedico,
-        'nombrePaciente': cita.nombrePaciente,
-        'apellidoPaciente': cita.apellidoPaterno,
-        'correo': cita.correo
-    } 
-    for cita in citas
-    ]
-    session['citas'] = citas_dict
-
-    print (session['citas'])
-
-
+    citas = ModelCita.obtenerCitasPorDoctor(db, session['user']['idUsuario'])
+    citas_obj=[]
+    for cita in citas:
+        cita_obj= CitaMedico(cita[0],cita[1],cita[2],cita[3],cita[4], cita[5], cita[6], cita[7],cita[8])
+        citas_obj.append(cita_obj)
+    print (citas_obj)
 
     
-    return render_template('homeDoctor.html', user=user, medico=medico)
+    return render_template('homeDoctor.html', user=user, medico=medico, citas=citas_obj)
 
 @app.route('/homeAdmi')
 def homeAdmi():
