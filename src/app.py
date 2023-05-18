@@ -35,7 +35,7 @@ app = Flask(__name__)
 @app.route('/')
 def index():
     #cuando se hace una entrada normal, te lleva a la pagina principal
-    return ("Hola mundo")
+    return "Hola mundo"
 
 # @app.route('/registro', methods=['GET', 'POST'])
 # def registro():
