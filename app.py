@@ -32,10 +32,13 @@ app = Flask(__name__)
 """ db=MySQL(app) """
 
 
-@app.route('/')
+@app.route('/',methods=['GET','POST'])
 def index():
-    #cuando se hace una entrada normal, te lleva a la pagina principal
-    return "Hola mundo"
+    if request.method == 'POST':
+        return "Hola Mundo"
+    if request.method == 'GET':
+        return "Hola Mundo GET"
+
 
 # @app.route('/registro', methods=['GET', 'POST'])
 # def registro():
