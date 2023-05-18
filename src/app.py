@@ -32,7 +32,7 @@ app = Flask(__name__)
 db=MySQL(app)
 
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
     #cuando se hace una entrada normal, te lleva a la pagina principal
     return redirect(url_for('login'))
