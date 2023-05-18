@@ -2,8 +2,7 @@ import os
 
 from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
 from flask_mysqldb import MySQL
-from config import Config
-from config import DevelopmentConfig
+
 #models
 from models.ModelUser import ModelUser
 from models.ModelHistorial import ModelHistorial
@@ -27,12 +26,24 @@ from models.entities.Administrador import Administrador
 from models.entities.Cita import Cita
 from models.entities.Cita import CitaReservar
 
-app_config = os.environ.get('APP_CONFIG')
+
+class Config:
+    SECRET_KEY = '4335'
+
+
+# Iniciar el servidor en modo de depuración
+class DevelopmentConfig(Config):
+    DEBUG = True
+    MYSQL_HOST = 'mediapp2.ctoyvdu4lxpi.us-east-2.rds.amazonaws.com'
+    MYSQL_USER = 'admin'
+    MYSQL_PASSWORD = 'Cx5mlp4335'
+    MYSQL_DB = 'mediapp2'
 
 app = Flask(__name__)
-app.config.from_object(app_config)
 
-db=MySQL(app)
+app.config.from_object(DevelopmentConfig)
+
+db = MySQL(app)
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -546,5 +557,4 @@ def logout():
 
 
 if __name__ == '__main__':
-    app.config.from_object(DevelopmentConfig)
     app.run(debug=False)
