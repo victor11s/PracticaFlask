@@ -11,7 +11,8 @@
     <!-- Agrega un logo -->
     <img src="{{url_for('static', filename= 'img/prueba.png')}}" alt="" width="72" height="57"
         style="margin-left: 10px;">
-    <a class="navbar-brand" style="margin-left: 15px;" href="{{ url_for('homeAdmi') }}">MediAPP</a>
+    <a class="navbar-brand" style="margin-left: 15px;" href="{{ url_for('home') }}">MediAPP</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs">MediAPP</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
         aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -20,13 +21,16 @@
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
                 <a class="nav-link" href="{{ url_for('home') }}">Dashboard</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('agendar') }}">Citas</a>
-            </li>
-            <li class="nav-item">
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('agendar') }}">Agendar</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('citasPaciente') }}">Citas</a>
+              </li>
+              <li class="nav-item">
                 <a class="nav-link" href="{{ url_for('perfilPaciente') }}">Mi Perfil</a>
-            </li>
+              </li>
         </ul>
         <!-- Agrega boton de cerrar sesion al final de la navbar hasta el lado derecho -->
         <div class="d-flex">

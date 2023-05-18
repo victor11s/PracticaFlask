@@ -42,67 +42,31 @@
 
 
 <main role="main" class="container">
-  <h1 class="mt-5">Bienvenido/a {{ paciente.nombre }}</h1>
+  <h1 class="mt-5">Revisa tus citas {{ paciente.nombre }}</h1>
 
 
-  <div class="row mt-5">
-    <div class="col-6">
-      <h2 class="mb-3 mt-2">Historial</h2>
-      <div style="max-width: 800px; margin: 0 auto;">
-        {% if historiales %}
-        {% for historial in historiales %}
-        <div class="accordion" id="accordionExample">
-          <div class="accordion-item mt-1">
-            <h2 class="accordion-header">
-              <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                data-bs-target="#collapse{{ historial.idHistorial }}" aria-expanded="true"
-                aria-controls="collapse{{ historial.idHistorial }}">
-                <strong>Historial #{{ historial.idHistorial }}</strong>
-              </button>
-            </h2>
-            <div id="collapse{{ historial.idHistorial }}" class="accordion-collapse collapse show"
-              data-bs-parent="#accordionHistorial">
-              <div class="accordion-body text-start">
-                <strong class="text-start">Enfermedad:</strong> {{ historial.enfermedad }}<br>
-                <strong class="text-start">Detalle:</strong> {{ historial.numConsulta }}<br>
-              </div>
-            </div>
-          </div>
-        </div>
-        {% endfor %}
-        {% else %}
-        <h3>No hay historiales</h3>
-        {% endif %}
-      </div>
-    </div>
-
-    <div class="col-6">
-      <h2 class="mb-3 mt-2">Resultados</h2>
-      {% if resultados %}
-      {% for resultado in resultados %}
-      <div class="accordion" id="accordionResultados">
-        <div class="accordion-item mt-1">
-          <h2 class="accordion-header">
-            <button class="accordion-button" type="button" data-bs-toggle="collapse"
-              data-bs-target="#collapse{{ resultado.idExamen }}" aria-expanded="true"
-              aria-controls="collapse{{ resultado.idExamen }}">
-              <strong>Examen #{{ resultado.idExamen }} - Fecha: {{ resultado.fechaExamen }}</strong>
-            </button>
-          </h2>
-          <div id="collapse{{ resultado.idExamen }}" class="accordion-collapse collapse show"
-            data-bs-parent="#accordionResultados">
-            <div class="accordion-body text-start">
-              <strong class="text-start">Resultado</strong> {{ resultado.resultadosExamen }}<br>
-            </div>
+  <div class="container mt-5">
+    <h2 class="mb-3 mt-2">Citas</h2>
+    {% if citas %}
+    <div class="row">
+      {% for cita in citas %}
+      <div class="col-lg-4">
+        <div class="card mt-3">
+          <div class="card-body">
+            <h5 class="card-title">Fecha: {{ cita.fecha }}</h5>
+            <p class="card-text">
+              Hora inicio: {{ cita.horaInicio }}<br>
+              Hora fin: {{ cita.horaFin }}<br>
+              Doctor: {{ cita.nombre }} {{ cita.apellidoPaterno }} <br>
+            </p>
           </div>
         </div>
       </div>
       {% endfor %}
-      {% else %}
-      <h3>No hay resultados</h3>
-      {% endif %}
     </div>
+    {% endif %}
   </div>
+
 
 
 
@@ -116,17 +80,7 @@
 
 
 
-
-
-
-
-
-
-
 </div>
-
-
-
 
 
 
@@ -144,10 +98,6 @@
 <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
 <script src="../../assets/js/vendor/popper.min.js"></script>
 <script src="../../dist/js/bootstrap.min.js"></script>
-
-
-
-
 
 
 {% endblock%}

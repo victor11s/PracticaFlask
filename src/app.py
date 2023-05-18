@@ -27,6 +27,7 @@ from models.entities.Administrador import Administrador
 from models.entities.Cita import Cita
 from models.entities.Cita import CitaReservar
 from models.entities.Cita import CitaMedico
+from models.entities.Paciente import PacienteCita
 
 
 class Config:
@@ -282,6 +283,21 @@ def home():
 
     return render_template('home.html', user=user, historiales=historiales, resultados=resultados, paciente=paciente)
 
+@app.route('/citasPaciente')
+def citasPaciente():
+    user_dict = session.get('user')
+    user = User(user_dict['idUsuario'], user_dict['tipoUsuario'], user_dict['correoElectronico'], user_dict['contraseña'])
+
+    paciente_dict = session.get('paciente')
+    paciente = Paciente(paciente_dict['idPaciente'], paciente_dict['nombre'], paciente_dict['apellidoPaterno'], paciente_dict['apellidoMaterno'], paciente_dict['fechaNacimiento'], paciente_dict['sexo'], paciente_dict['telefono'])
+
+    citas = ModelPaciente.obtenerCitas(db, session['user']['idUsuario'])
+    citas_obj=[]
+    for cita in citas:
+        cita_obj= PacienteCita(cita[0],cita[1],cita[2],cita[3],cita[4],cita[5],cita[6])
+        citas_obj.append(cita_obj)
+
+    return render_template('citasPaciente.html', user=user, citas=citas_obj, paciente=paciente)
 
 @app.route('/homeDoctor')
 def homeDoctor():
@@ -322,6 +338,9 @@ def homeAdmi():
         pacientes.append(paciente_obj)
 
     return render_template('homeAdmi.html', user=user, admin=admin,medicos=medicos, pacientes=pacientes)
+
+
+
 
 #----Agendar Citas------------------------------------------------------------------------------------------------------------------------------
 @app.route('/agendar')

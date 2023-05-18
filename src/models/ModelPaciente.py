@@ -48,6 +48,18 @@ class ModelPaciente():
             print("No se pudo actualizar el perfil del paciente")
             print(ex)
             return False
+        
+    @classmethod
+    def obtenerCitas(cls, db, idUsuario):
+        try:
+            cursor = db.connection.cursor()
+            sql = "CALL obtener_citas_paciente(%s)"
+            cursor.execute(sql, (idUsuario,))
+            citas = cursor.fetchall()
+            return citas
+        except Exception as ex:
+            print(ex)
+            return None
 
 
      #--------------por ver si jalan o no-----------------------------------------------------------   
