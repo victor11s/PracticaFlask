@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
 from flask_mysqldb import MySQL
-from config import config
-
+from config import Config
+from config import DevelopmentConfig
 #models
 from models.ModelUser import ModelUser
 from models.ModelHistorial import ModelHistorial
@@ -539,7 +539,8 @@ def logout():
     session.clear()
     return redirect('/')
 
+
+
 if __name__ == '__main__':
-    #esto me sirve para cargar la configuracion de desarrollo
-    app.config.from_object(config['development'])
+    app.config.from_object(DevelopmentConfig)
     app.run(debug=False)

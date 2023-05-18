@@ -1,8 +1,8 @@
-class config():
+class Config():
     SECRET_KEY = '4335'
 
 #iniciar el servidor en modo de depuracion
-class DevelopmentConfig(config):
+class DevelopmentConfig(Config):
     DEBUG = True
     MYSQL_HOST = 'mediapp2.ctoyvdu4lxpi.us-east-2.rds.amazonaws.com'
     MYSQL_USER = 'admin'
