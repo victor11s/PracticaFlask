@@ -27,12 +27,26 @@ from models.entities.Cita import Cita
 from models.entities.Cita import CitaReservar
 
 
+class Config:
+    SECRET_KEY = '4335'
+
+
+# Iniciar el servidor en modo de depuración
+class DevelopmentConfig(Config):
+    DEBUG = True
+    MYSQL_HOST = 'mediapp2.ctoyvdu4lxpi.us-east-2.rds.amazonaws.com'
+    MYSQL_USER = 'admin'
+    MYSQL_PASSWORD = 'Cx5mlp4335'
+    MYSQL_DB = 'mediapp2'
+
 app = Flask(__name__)
 
-db=MySQL(app)
+app.config.from_object(DevelopmentConfig)
+
+db = MySQL(app)
 
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
     #cuando se hace una entrada normal, te lleva a la pagina principal
     return redirect(url_for('login'))
