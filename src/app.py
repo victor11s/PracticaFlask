@@ -32,7 +32,7 @@ app = Flask(__name__)
 db=MySQL(app)
 
 
-@app.route('/', methods=['GET'])
+@app.route('/', methods=['GET', 'POST', 'PUT'])
 def index():
     #cuando se hace una entrada normal, te lleva a la pagina principal
     return ("Hola mundo")
