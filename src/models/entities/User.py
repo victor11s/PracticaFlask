@@ -20,7 +20,8 @@ class User():
     
     
 class UserRegistro():
-    def __init__(self,tipoUsuario, correoElectronico, contraseña ):
+    def __init__(self,idUsuario,tipoUsuario, correoElectronico, contraseña ):
+        self.idUsuario = idUsuario
         self.tipoUsuario = tipoUsuario
         self.correoElectronico = correoElectronico
         self.contraseña = contraseña

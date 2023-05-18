@@ -16,17 +16,19 @@
 
         <h1 class="h3 mb-3 fw-normal">Registrese</h1>
 
-        {% with message =get_flashed_messages()%}
-        {% if message%}
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
         <br>
-        {% for msg in message%}
-        <div class="alert alert-danger alert-dismissible" role="alert">
-            {{msg}}
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible" role="alert">
+            {{ message }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
         {% endfor %}
         {% endif %}
         {% endwith %}
+
+
 
         <div class="form-floating">
             <input type="email" class="form-control" name="correo" id="floatingInput" placeholder="name@example.com">
@@ -36,7 +38,7 @@
             <input type="password" class="form-control" name="contraseña" id="floatingPassword" placeholder="Password">
             <label for="floatingPassword">Contraseña</label>
         </div>
-        
+
         <div class="form-floating">
             <input type="text" class="form-control" name="nombre" id="floatingInput" placeholder="">
             <label for="floatingInput">Nombre</label>
@@ -54,7 +56,7 @@
             <input type="date" class="form-control" name="fechaNacimiento" id="floatingInput" placeholder="">
             <label for="floatingInput">Fecha de Nacimiento</label>
         </div>
-        
+
         <div class="form-floating">
             <select class="form-select" name="sexo" id="floatingSelect" aria-label="Floating label select example">
                 <option selected>Sexo</option>
@@ -62,7 +64,7 @@
                 <option value="M">Mujer</option>
             </select>
             <label for="floatingSelect">Sexo</label>
-        </div>        
+        </div>
         <div class="form-floating">
             <input type="text" class="form-control" name="telefono" id="floatingInput" placeholder="">
             <label for="floatingInput">Telefono</label>

@@ -13,8 +13,6 @@ from models.ModelAdministrador import ModelAdministrador
 from models.ModelCita import ModelCita
 
 
-
-
 #entities
 from models.entities.User import User
 from models.entities.User import UserRegistro
@@ -62,7 +60,7 @@ def registro():
 def registroUsuario():
     if request.method == 'POST':
         # Crear objeto UserRegistro y PacienteRegistro
-        user = UserRegistro(
+        user = UserRegistro(0,
             1, 
             request.form['correo'],
             UserRegistro.hash_password(request.form['contraseña']),
@@ -70,7 +68,7 @@ def registroUsuario():
         print(UserRegistro)
         print(UserRegistro.hash_password(request.form['contraseña']))
         paciente = PacienteRegistro(
-            None,
+            0,
             request.form['nombre'],
             request.form['apellidoPaterno'],
             request.form['apellidoMaterno'],
@@ -81,15 +79,17 @@ def registroUsuario():
         print(paciente.idUsuario)
         # Registrar usuario y paciente
         try:
-            ModelUser.register(db, user)
-            ModelPaciente.register(db, user, paciente)
-            flash("Usuario y paciente registrados")
+            idUsuario = ModelUser.register(db, user, paciente)
+            # idUsuario ahora contiene el ID del usuario recién creado.
+            
+            flash("Usuario y paciente registrados", "success")
             return render_template('auth/login.html')
         except Exception as ex:
-            flash("Error al registrar usuario y paciente: " + str(ex))
+            flash("Error al registrar usuario y paciente: " + str(ex), "danger")
             return render_template('auth/registro.html')
     else:
         return render_template('auth/registro.html')
+
 
     
 #copia del main------------------------------------------------------------------------------------------------------------------------------

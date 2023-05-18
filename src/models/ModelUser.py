@@ -23,9 +23,6 @@ class ModelUser():
         
     @classmethod
     def register(self,db,user,userRegistro):
-        #haz el mismo metodo de arriba, pero sin pedir el tipo de usuario, ademas pide el nombre, apellido paterno y materno, sexo, telefono y su correo y contraseña, usando el modelo de UserRegistro
-        cursor = db.connection.cursor()
-
         cursor = db.connection.cursor()
 
         try:
@@ -40,16 +37,20 @@ class ModelUser():
             idUsuario = cursor.lastrowid
 
             # Insertamos en la tabla Usuarios
-            sql_usuarios = """INSERT INTO Usuarios (idUsuario, tipoUsuario, correoElectronico, contraseña)
+            sql_usuarios = """INSERT INTO usuarios (idUsuario, tipoUsuario, correoElectronico, contraseña)
                             VALUES ('{}', '{}', '{}', '{}')""".format(
-                user.idUsuario, user.tipoUsuario, user.correoElectronico, user.contraseña)
+                idUsuario, user.tipoUsuario, user.correoElectronico, user.contraseña)
             cursor.execute(sql_usuarios)
             db.connection.commit()
+
+            return idUsuario
+
         except Exception as e:
             db.connection.rollback()  # Deshacer cambios en caso de error
             print("Error: ", str(e))
         finally:
             cursor.close()
+
 
         
     @classmethod
