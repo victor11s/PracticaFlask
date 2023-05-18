@@ -447,7 +447,7 @@ def actualizar_perfil():
         # Guardar el objeto de sesión actualizado
         session['user'] = user_dict
         
-        flash('Perfil actualizado con éxito', 'success')
+        flash('Perfil actualizado con éxito,porfavor vuelva a iniciar sesion para ver los cambios', 'success')
     else:
         flash('Hubo un error al actualizar el perfil', 'danger')
 
@@ -468,6 +468,8 @@ def perfilDoctor():
 
     medico_dict = session.get('medico')
     medico = Medico(medico_dict['idMedico'], medico_dict['nombre'], medico_dict['apellidoPaterno'], medico_dict['apellidoMaterno'], medico_dict['fechaNacimiento'], medico_dict['sexo'], medico_dict['telefono'])
+
+
     return render_template('perfilMedico.html', user=user, medico=medico)
 
 @app.route('/actualizar_perfilDoctor', methods=['POST'])
@@ -495,7 +497,7 @@ def actualizar_perfilDoctor():
         # Guardar el objeto de sesión actualizado
         session['user'] = user_dict
         
-        flash('Perfil actualizado con éxito', 'success')
+        flash('Perfil actualizado con éxito,porfavor vuelva a iniciar sesion para ver los cambios', 'success')
     else:
         flash('Hubo un error al actualizar el perfil', 'danger')
 
@@ -529,6 +531,7 @@ def editar_medico():
     else:
         # Manejar el caso en que el médico no se encuentra
         return "Medico no encontrado", 404
+    
 
 #----Termina Mi Perdil Doctor------------------------------------------------------------------------------------------------------------------------------
 
