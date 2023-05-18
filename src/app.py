@@ -4,27 +4,27 @@ from flask import Flask, render_template, request, redirect, url_for, flash, ses
 from flask_mysqldb import MySQL
 
 #models
-from models.ModelUser import ModelUser
-from models.ModelHistorial import ModelHistorial
-from models.ModelResultado import ModelResultado
-from models.ModelPaciente import ModelPaciente
-from models.ModelMedico import ModelMedico
-from models.ModelAdministrador import ModelAdministrador
-from models.ModelCita import ModelCita
+from src.models.ModelUser import ModelUser
+from src.models.ModelHistorial import ModelHistorial
+from src.models.ModelResultado import ModelResultado
+from src.models.ModelPaciente import ModelPaciente
+from src.models.ModelMedico import ModelMedico
+from src.models.ModelAdministrador import ModelAdministrador
+from src.models.ModelCita import ModelCita
 
 
 
 #entities
-from models.entities.User import User
-from models.entities.User import UserRegistro
-from models.entities.Historial import Historial
-from models.entities.Resultado import Resultado
-from models.entities.Paciente import Paciente
-from models.entities.Paciente import PacienteRegistro
-from models.entities.Medico import Medico
-from models.entities.Administrador import Administrador
-from models.entities.Cita import Cita
-from models.entities.Cita import CitaReservar
+from src.models.entities.User import User
+from src.models.entities.User import UserRegistro
+from src.models.entities.Historial import Historial
+from src.models.entities.Resultado import Resultado
+from src.models.entities.Paciente import Paciente
+from src.models.entities.Paciente import PacienteRegistro
+from src.models.entities.Medico import Medico
+from src.models.entities.Administrador import Administrador
+from src.models.entities.Cita import Cita
+from src.models.entities.Cita import CitaReservar
 
 
 class Config:
