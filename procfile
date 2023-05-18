@@ -1,1 +1,1 @@
-web: gunicorn src.app:mediapp
+web: gunicorn src.app:app
