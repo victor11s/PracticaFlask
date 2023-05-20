@@ -4,7 +4,7 @@ from.entities.User import User
 #-------------COPIAS CON CAMBIOS--------------------------------------------------------------------------------------------------
 class ModelUser():
 
-    #haz el mismo metodo de arriba, pero obteniendo ademas su tipoUsuario
+    
     @classmethod #para poder usarlo sin instanciarlo, este se puede quedar igual
     def login(self,db,user):
         try:
