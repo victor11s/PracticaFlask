@@ -35,10 +35,10 @@ class Config:
 # Iniciar el servidor en modo de depuración
 class DevelopmentConfig(Config):
     DEBUG = True
-    MYSQL_HOST = 'mediapp3.ctoyvdu4lxpi.us-east-2.rds.amazonaws.com'
+    MYSQL_HOST = 'mediapp2.ctoyvdu4lxpi.us-east-2.rds.amazonaws.com'
     MYSQL_USER = 'admin'
     MYSQL_PASSWORD = 'Cx5mlp4335'
-    MYSQL_DB = 'mediapp3'
+    MYSQL_DB = 'mediapp2'
 
 app = Flask(__name__)
 
@@ -292,10 +292,14 @@ def citasPaciente():
     paciente = Paciente(paciente_dict['idPaciente'], paciente_dict['nombre'], paciente_dict['apellidoPaterno'], paciente_dict['apellidoMaterno'], paciente_dict['fechaNacimiento'], paciente_dict['sexo'], paciente_dict['telefono'])
 
     citas = ModelPaciente.obtenerCitas(db, session['user']['idUsuario'])
+    print(citas)
     citas_obj=[]
     for cita in citas:
         cita_obj= PacienteCita(cita[0],cita[1],cita[2],cita[3],cita[4],cita[5],cita[6])
+        print(cita_obj)
         citas_obj.append(cita_obj)
+
+    print(citas_obj)
 
     return render_template('citasPaciente.html', user=user, citas=citas_obj, paciente=paciente)
 
