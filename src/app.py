@@ -34,10 +34,10 @@ class Config:
 # Iniciar el servidor en modo de depuración
 class DevelopmentConfig(Config):
     DEBUG = True
-    MYSQL_HOST = 'mediapp2.ctoyvdu4lxpi.us-east-2.rds.amazonaws.com'
+    MYSQL_HOST = 'mediapp3.ctoyvdu4lxpi.us-east-2.rds.amazonaws.com'
     MYSQL_USER = 'admin'
     MYSQL_PASSWORD = 'Cx5mlp4335'
-    MYSQL_DB = 'mediapp2'
+    MYSQL_DB = 'mediapp3'
 
 app = Flask(__name__)
 
