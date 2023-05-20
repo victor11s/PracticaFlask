@@ -16,7 +16,7 @@
         
         <h1 class="h3 mb-3 fw-normal">Inicie Sesión</h1>
 
-        {% with message =get_flashed_messages((with_categories=true))%}
+        {% with message =get_flashed_messages()%}
         {% if message%}
         <br>
         {% for msg in message%}
