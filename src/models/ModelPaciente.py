@@ -61,7 +61,6 @@ class ModelPaciente():
             print(ex)
             return None
 
-
      #--------------por ver si jalan o no-----------------------------------------------------------   
     #llamar a store procedure, que obtiene los id de los paciente que han sido atendidos por ese medico
     @classmethod
