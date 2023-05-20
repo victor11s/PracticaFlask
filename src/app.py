@@ -520,7 +520,7 @@ def actualizar_perfilDoctor():
     user_dict = session.get('user')
     idUsuario = user_dict['idUsuario']
     
-    # Obtener los nuevos datos desde la solicitud HTTP
+
     nombreNuevo = request.form.get('nombre')
     apellidoPaternoNuevo = request.form.get('apellidoPaterno')
     apellidoMaternoNuevo = request.form.get('apellidoMaterno')
@@ -544,7 +544,7 @@ def actualizar_perfilDoctor():
     else:
         flash('Hubo un error al actualizar el perfil', 'danger')
 
-    # Depuración: Imprimir el objeto de sesión actualizado
+
     print(session['user'])
 
     return redirect(url_for('perfilDoctor'))
@@ -555,8 +555,7 @@ def editar_paciente():
     id_paciente = request.form['idPaciente']
     paciente = db.session.query(Paciente).get(id_paciente)
     if paciente:
-        # Aquí puedes procesar la edición del paciente
-        # Después de la edición, puedes redirigir al usuario a la página que desees
+
         return redirect(url_for('homeAdmi'))
     else:
         # Manejar el caso en que el paciente no se encuentra
@@ -568,11 +567,9 @@ def editar_medico():
     medico = db.session.query(Medico).get(id_medico)
     if medico:
         
-        # Aquí puedes procesar la edición del médico
-        # Después de la edición, puedes redirigir al usuario a la página que desees
+
         return redirect(url_for('homeAdmi'))
     else:
-        # Manejar el caso en que el médico no se encuentra
         return "Medico no encontrado", 404
     
 

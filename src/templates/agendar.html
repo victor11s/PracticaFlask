@@ -11,7 +11,7 @@
 
 
 <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-info navbar-expand-sm">
-  <!-- Agrega un logo -->
+  
   <img src="{{url_for('static', filename= 'img/prueba.png')}}" alt="" width="72" height="57" style="margin-left: 10px;">
   <a class="navbar-brand" style="margin-left: 15px;" href="{{ url_for('home') }}">MediAPP</a>
   <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs>MediAPP</a>
@@ -69,7 +69,7 @@
     </div>
 
     <div class="col-9">
-      <!-- Añade el atributo action al formulario -->
+      
       <form action="{{ url_for('agendar_cita') }}" method="post">
         <div class="form-group">
           <label for="doctor">Elige un doctor</label>
